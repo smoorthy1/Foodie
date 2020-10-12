@@ -1,0 +1,81 @@
+/*CSS page for home page, we can create more for others if needed*/
+body {
+    margin:0;
+    padding:0;
+    font-family: Sans-Serif;
+    line-height: 1.5em;
+}
+
+header {
+    background: yellow;
+    height: 100px;
+}
+
+h1 {
+    margin: 0;
+    padding-top: 15px;
+    color: blue;
+    font-family: Garamond;
+}
+
+main {
+    padding-bottom: 10010px;
+    margin-bottom: -10000px;
+    float: left;
+    width: 100%;
+}
+
+
+footer {
+    clear: left;
+    width: 100%;
+    background: yellow;
+    text-align: center;
+    padding: 4px 0;
+}
+
+#wrapper {
+    overflow: hidden;
+}
+            
+#content {
+    margin-right: 230px; /* Same as 'nav' width */
+}
+
+.innertube {
+    margin: 15px; /* Padding for content */
+    margin-top: 0;
+}
+
+p {
+    color: #555;
+}
+#mainMenu {
+	margin:10px;
+	width:900px;
+	font-family: sans-serif;
+}
+#mainMenu li {
+	display:block;
+	width:120px;
+	float:left;
+	margin-left:2px;
+	border:1px solid #000;
+}
+
+#mainMenu a {
+	display:block;
+	padding:3px;
+	text-decoration:none;
+	background-color: greenyellow;
+	color:#009;
+}
+
+#mainMenu a:hover {
+	background-color:#009;
+	color:#fff;
+}
+
+
+
+ 
