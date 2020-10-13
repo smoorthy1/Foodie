@@ -7,15 +7,16 @@ body {
 }
 
 header {
-    background: green;
+    background: #8fa382;
     height: 100px;
 }
 
 h1 {
     margin: 0;
     padding-top: 15px;
-    color: black;
-    font-family: Garamond;
+    color: #ffffff;
+    font-family: cursive;
+    font-weight: bold;
 }
 
 main {
@@ -29,7 +30,7 @@ main {
 footer {
     clear: left;
     width: 100%;
-    background: yellow;
+    background: #8fa382;
     text-align: center;
     padding: 4px 0;
 }
@@ -60,19 +61,20 @@ p {
 	width:120px;
 	float:left;
 	margin-left:2px;
-	border:1px solid #000;
+	border:1px solid #767a7b;
 }
 
 #mainMenu a {
 	display:block;
-	padding:3px;
+	padding:8px;
 	text-decoration:none;
-	background-color: greenyellow;
-	color:#009;
+	background-color: #767a7b;
+    color:#ffffff;
+    font-family: cursive;
 }
 
 #mainMenu a:hover {
-	background-color:#009;
+	background-color:#00916e;
 	color:#fff;
 }
 
