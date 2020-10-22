@@ -1,0 +1,26 @@
+{
+  "name": "foodie",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Web Application that allows clients to peruse various foods and can select specific foods and be presented specific recipes for the user to make.",
+  "main": "app.js",
+  "dependencies": {
+    "browser-sync": "^2.26.12",
+    "jquery": "^3.5.1",
+    "react": "^16.13.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smoorthy1/Foodie.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smoorthy1/Foodie/issues"
+  },
+  "homepage": "https://github.com/smoorthy1/Foodie#readme"
+}
