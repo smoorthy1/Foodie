@@ -49,7 +49,7 @@ p {
 }
 
 .footer {
-    background-color: #D3CBC7;
+    background-color: #111;
     border-radius: 8px; 
     width: 100%;
     padding: 10px; 
@@ -57,9 +57,9 @@ p {
 
 .footnote {
     font-family: Ink Free;
-    color: #515051;
+    color: #818181;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 22px;
     text-align: center; 
 }
 
