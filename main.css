@@ -11,13 +11,37 @@ img {
 .bg-img {
   filter: blur(8px);
   -webkit-filter: blur(8px);
+  overflow: hidden;
+  margin: 0px 0px -150px 0px;
+  max-height: 250px;
+}
+
+.ibx-img {
+  overflow: hidden;
+  margin: 0px 0px -100px 0px;
+  max-height: 300px;
+  border-radius: 4px;
+}
+
+.header {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 350px;
+}
+
+.cropped {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 150px;
 }
 
 #profilePic {
   cursor: pointer;
 }
 
-#profileUpload {
+#picUpload {
   display: none;
 }
 
@@ -30,6 +54,9 @@ img {
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h1 {
@@ -76,9 +103,22 @@ p {
     text-align: center;
 }
 
+
+.inside-header {
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  text-align: center;
+  font-family: Ink Free;
+  font-weight: bold;
+  font-size: 60px;
+}
+
 .footer {
     background-color: #111;
-    border-radius: 8px; 
+    border-radius: 4px; 
     width: 100%;
     padding: 10px; 
 }
