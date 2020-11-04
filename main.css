@@ -290,7 +290,7 @@ input[type=submit]:focus {
 #newdiv {
   background-color: lightgreen; 
   width: 600px;
-  border: 5px solid black;
+  border: 3px solid black;
   padding: 20px;
   margin: 20px;
 }

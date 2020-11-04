@@ -53,17 +53,6 @@ $(document).ready(() => {
                     $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
                     $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                     $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
-                    /*
-                    allRecipes.forEach(recipe => {
-                        let generalInfo = recipe["recipe"];
-                        let calories = generalInfo["calories"];
-                        let name = generalInfo["label"];
-                        let imageLink = generalInfo["image"];
-                        console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
-                        $('#recipe_list').append(`<li>Name: ${name}  Calories: ${calories}</li>`);
-                        $('#recipe_list').append(`<li><img src=${imageLink} style="width: 400px; height: 400px;"><li>`);
-                    })
-                    */
                 }
             },
             error: () => {
