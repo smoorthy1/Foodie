@@ -1,30 +1,11 @@
 export const createHome = function() {
-    var $container = $('<div></div>').addClass('container');
+    var $container = $('<div></div>').addClass('cropped');
     var $photo = $('<img src="food.jpg" alt="Food">').addClass('bg-img');
     var $siteName = $('<div>Foodie</div>').addClass('centered');
     $container.append($photo);
     
     return $container;
 }
-
-export const previewProfPic = function(uploader) {
-    if (uploader.files && uploader.files[0]) {
-        var imageFile = uploader.files[0];
-        var reader = new FileReader();    
-        reader.onload = function (e) {
-            //set the image data as source
-            $('#profileImage').attr('src', e.target.result);
-        }    
-        reader.readAsDataURL( imageFile );
-    }
-}
-
-// export const fasterPreview = function(uploader) {
-//     if ( uploader.files && uploader.files[0] ){
-//         $('#profileImage').attr('src', 
-//            window.URL.createObjectURL(uploader.files[0]) );
-//   }
-// }
 
 export const createForm = function() {
     var $container = $('<div></div>').addClass('container'); 
@@ -34,8 +15,8 @@ export const createForm = function() {
     var $emailSec = $('<div></div>').addClass('row');
     var $passSec = $('<div></div>').addClass('row');
     var $profSec = $('<div></div>').addClass('profile-container');
-    var $profile = $('<img id="profilePic" src="https://image.freepik.com/free-vector/cute-welsh-corgi-puppy-cartoon-icon_42750-507.jpg">');
-    var $pic = $('<input type="file" id="profileUpload" name="profilePic" placeholder="Photo" required="" capture>');
+    var $profile = $('<img id="profilePic" src="https://i.pinimg.com/564x/5e/fc/87/5efc87ed8b6dae09f05c8f497cc1b738.jpg">');
+    var $pic = $('<input type="file" id="upload" name="picUpload" placeholder="Photo" required="" capture>');
     var $title = $('<div></div>').append($('<h1>Name</h1>').addClass('contact'));
     var $flabel = $('<div></div>').addClass('col-25').append($('<label for="fname">First Name</label>'));
     var $fname = $('<div></div>').addClass('col-75').append($('<input type="text" id="fname" name="firstname" placeholder="First Name">'));
@@ -95,23 +76,10 @@ $(function() {
         document.getElementById('page').style.marginLeft = '85px'; 
     });
 
-    $('#profilePic').on('click', function(event) {
-        event.preventDefault();
-        $('#profileUpload').on('click', function(event) {
-
-        });
-    });
-
-    function fasterPreview( uploader ) {
-        if ( uploader.files && uploader.files[0] ){
-              $('#profilePic').attr('src', 
-                 window.URL.createObjectURL(uploader.files[0]) );
-        }
-    }
-
-    $('#profileUpload').on('change', function(event) {
-        fasterPreview(this);
-    });
-    
+   
+    $('#upload').on('change', function(event) {
+        $('#profilePic').attr('src', $('#upload').val());
+        console.log($('#upload').val());
+    })
     
 })
