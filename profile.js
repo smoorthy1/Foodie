@@ -47,3 +47,26 @@ auth.onAuthStateChanged(function(user) {
     
 });
 
+// database work //
+
+var database = firebase.database();
+
+/*function writeUserData(userId, name, email, animal) {
+    alert("Storing user data onto Realtime Database");
+    firebase.database().ref('users/' + userId).set({
+      username: name,
+      email: email,
+      animal: animal
+    });
+  }
+  */
+
+ function writeUserData() {
+    alert("Storing user data onto Realtime Database");
+    firebase.database().ref('users/' + 0001).set({
+      username: "Mike",
+      email: "zhang18m@live.unc.edu",
+      animal: "WHALES"
+    });
+  }
+
