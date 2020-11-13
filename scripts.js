@@ -1,3 +1,5 @@
+
+
 $(document).ready(() => {
 
     /*
@@ -77,9 +79,10 @@ export const createHome = function() {
 export const body = function() {
     var $body = $('<div id=newdiv></div>');
     var $head = $('<h1>Try our Application<h1>');
-    let $button = $(`<button id="name_button">Press Me to Test API</button>`)
+    let $button = $(`<button id="name_button">Press Me to Test API</button>`);
+    let $signOutButton = $(`<button onClick="signOut()" id="signOut">Sign Out Hereeeee</button>`);
     var $info = $('<div id=recipe_div></div>');
-    $body.append($head, $button, $info);
+    $body.append($head, $button, $signOutButton, $info);
     return $body; 
 }
 
