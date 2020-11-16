@@ -6,6 +6,46 @@ export const header = function() {
     return $container; 
 }
 
+export const body = function(id) {
+
+    var $body = $('<div></div>');
+    //var $head = $(`<h1>Hello, ${id}<h1>`);
+    //$body.append($head);
+
+    let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+
+    usersRef.get().then(function(doc) {
+        if (doc.exists) {
+            console.log(doc.data().first_name);
+            var $head = $(`<h1>Hello, ${doc.data().first_name}<h1>`);
+            $body.append($head);
+            console.log("Document data:", doc.data().recipe);
+            let recipe_list = doc.data().recipe;
+            recipe_list.forEach(recipe => {
+                let name = recipe.name;
+                let calories = recipe.calories;
+                let image = recipe.image;
+                let url = recipe.url;
+                let recipe_card = `<div class="recipe_card">
+                                        <p>Recipe name: ${name}</p>
+                                        <p>Recipe name: ${calories}</p>
+                                        <p>Recipe name: ${image}</p>
+                                        <p>Recipe name: ${url}</p>
+                                    </div>`
+                $body.append(recipe_card);
+            })
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("Inbox is empty!");
+            alert("Your inbox is empty!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+    return $body; 
+}
+
 export const footer = function() {
     var $footer = $('<div></div>').addClass('footer');
     var $footnote = $('<p>Property of CyberChase Inc.</p>').addClass('footnote');
@@ -25,23 +65,38 @@ export const sideBar = function() {
     return $sideBar;
 }
 
-$(function() {
-    const $root = $('#root');
-    const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(header(), footer());
-    $root.append(sideBar(), $page);
+// $(function() {
+$(document).ready(() => {
+    auth.onAuthStateChanged(function(user) {
+        if(user) {
+            window.authUID = firebase.auth().currentUser.uid;
+            console.log(authUID);
 
+            const $root = $('#root');
+            const $page = $('<div id="page"><div>').addClass('main');
+            $page.append(header(), body(authUID), footer());
+            $root.append(sideBar(), $page);
+        
+        
+            $('#sidebar').on('mouseover', function(event) {
+                event.preventDefault();
+                document.getElementById('sidebar').style.width = '250px';
+                document.getElementById('page').style.marginLeft = '250px'; 
+            });
+        
+            $('#sidebar').on('mouseout', function(event) {
+                event.preventDefault();
+                document.getElementById('sidebar').style.width = '85px';
+                document.getElementById('page').style.marginLeft = '85px'; 
+            });   
 
-    $('#sidebar').on('mouseover', function(event) {
-        event.preventDefault();
-        document.getElementById('sidebar').style.width = '250px';
-        document.getElementById('page').style.marginLeft = '250px'; 
+        }
+        else {
+            alert("No Active User");
+        }
     });
-
-    $('#sidebar').on('mouseout', function(event) {
-        event.preventDefault();
-        document.getElementById('sidebar').style.width = '85px';
-        document.getElementById('page').style.marginLeft = '85px'; 
-    });    
-    
+    if ($('#root').is('empty')) {
+        alert("empty page");
+    }
+    // need to redirect users to login page if they haven't signed in yet. Should go down here.
 })

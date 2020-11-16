@@ -7,11 +7,46 @@
 		<link rel="stylesheet" href="main.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-		<script src="profile.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
+		<script src="fireBase.js"></script>
 	</head>
 	
 	<body>
+		<script>
+			function likeButton() {
+				console.log("liked");
+				authg.onAuthStateChanged(function(user) {
+					if(user) {
+						// gets the user UID - VERY IMPORTANT !!!
+						console.log("Display Name = " + firebase.auth().currentUser.uid);
+						window.authUID = firebase.auth().currentUser.uid;
+						// $page.append(`<p id="greeting">Hello, ${firebase.auth().currentUser.displayName}</p>`);
+						//is signed in
+						let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+						usersRef.get().then((docSnapshot) => {
+							if (docSnapshot.exists) {
+								usersRef.onSnapshot((doc) => {
+									console.log(doc);
+									console.log("ID already exists in database");
+								});
+							}
+							else {
+								usersRef.set({
+									first_name: firstName,
+									last_name: lastName,
+									email: email,
+									password: password
+								})
+							}
+						})
+					}
+					else {
+						console.log("No one logged in");
+					}
+				});
+			}
+		</script>
 		<div id="root">
 		</div>
 

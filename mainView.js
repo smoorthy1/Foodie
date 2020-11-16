@@ -42,7 +42,7 @@ export const sideBar = function() {
     return $sideBar;
 }
 
-$(function() {
+$(document).ready(() => {
     const $root = $('#root');
     const $page = $('<div id="page"><div>').addClass('main');
     $page.append(createHome(), body(), footer());

@@ -1,5 +1,3 @@
-
-
 $(document).ready(() => {
 
     /*
@@ -15,6 +13,23 @@ $(document).ready(() => {
     $('#options').append(`<label for="option4">Dinner</label><br>`);
     $('#options').append(`<button type="submit">Submit</button>`);
     */
+
+
+   authg.onAuthStateChanged(function(user) {
+        if(user) {
+            // gets the user UID - VERY IMPORTANT !!!
+            console.log("Display Name = " + firebase.auth().currentUser.uid);
+            window.authUID = firebase.auth().currentUser.uid;
+            // $page.append(`<p id="greeting">Hello, ${firebase.auth().currentUser.displayName}</p>`);
+            //is signed in
+        }
+        else {
+            console.log("No one logged in");
+        }
+    });
+
+
+
     const $page = $('<div id="page"><div>').addClass('main');
     $page.append(body(), footer());
     $('#root').append(sideBar(), $page);
@@ -51,10 +66,45 @@ $(document).ready(() => {
                     let theUrl = generalInfo["url"];
                     let imageLink = generalInfo["image"];
                     console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
+                    console.log("Current user = " + authg.currentUser.uid);
                     $('#recipe_div').empty().append(`<p>Name: ${name}<p>`);
                     $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
                     $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                     $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
+                    $('#recipe_div').append(`<button id="likeButton">LIKE</button>`);
+                    $('#likeButton').click(function() {
+                        console.log('likeButton clicked');
+                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+                        // window.authUID = firebase.auth().currentUser.uid;
+						let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+						usersRef.get().then((docSnapshot) => {
+							if (docSnapshot.exists) {
+								usersRef.onSnapshot((doc) => {
+                                    console.log(doc);
+                                    
+                                    let recipe_object = {
+                                        name: name,
+                                        calories: calories,
+                                        url: theUrl,
+                                        image: imageLink
+                                    }
+                                    usersRef.update({
+                                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                    })
+
+									console.log("ID already exists in database");
+								});
+							}
+							else {
+								usersRef.set({
+									first_name: firstName,
+									last_name: lastName,
+									email: email,
+									password: password
+								})
+							}
+                        })
+                    });
                 }
             },
             error: () => {
