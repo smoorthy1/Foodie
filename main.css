@@ -277,6 +277,30 @@ input[type=text] {
   margin-bottom: 15px;
 }
 
+input[type=email] {
+  width: 600px;
+  font-family: Ink Free;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 4px;
+  border: 2px solid #CFCBC9;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+input[type=password] {
+  width: 600px;
+  font-family: Ink Free;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 4px;
+  border: 2px solid #CFCBC9;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
 input[type=submit] {
   background: #CFCBC9;
   margin-bottom: 15px;
@@ -365,3 +389,11 @@ a.button {
   color: #515051;
 }
 
+.recipe_card {
+  background-color: green;
+  border-style: solid;
+}
+
+.recipe_card p {
+  color: white;
+}

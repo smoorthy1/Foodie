@@ -6,8 +6,8 @@
   "main": "app.js",
   "dependencies": {
     "browser-sync": "^2.26.12",
-    "jquery": "^3.5.1",
-    "react": "^16.13.1"
+    "firebase": "^8.0.0",
+    "jquery": "^3.5.1"
   },
   "devDependencies": {},
   "scripts": {

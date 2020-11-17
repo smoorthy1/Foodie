@@ -1,4 +1,4 @@
-var firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyCbHtGeJVWb96JDYZWx5y1HmXY6QIo98UQ",
     authDomain: "foodie-8bb79.firebaseapp.com",
     databaseURL: "https://foodie-8bb79.firebaseio.com",
@@ -9,20 +9,49 @@ var firebaseConfig = {
     measurementId: "G-NTTL4D6JH3"
 };
 firebase.initializeApp(firebaseConfig);
+
+window.dbg = firebase.firestore();
+const db = firebase.firestore();
+window.authg = firebase.auth();
 const auth = firebase.auth();
 
-function signUp(){
+function signUp() {
     var email = document.getElementById("email");
     var password = document.getElementById("password");
     const promise = auth.createUserWithEmailAndPassword(email.value, password.value);
     promise.catch(e => alert(e.message));
-    alert("Signed Up");
+    promise.then(signIn());
+    alert("Signed up, please sign in to start working");
 }
 
 function signIn(){
-    var email = document.getElementById("email");
-    var password = document.getElementById("password");
-    const promise = auth.signInWithEmailAndPassword(email.value, password.value);
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+
+    const promise = auth.signInWithEmailAndPassword(email, password);
+    promise.then((value) => {
+        console.log(value.user.uid);
+        window.uid = value.user.uid;
+        let usersRef = db.collection('users').doc(value.user.uid);
+        usersRef.get().then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                usersRef.onSnapshot((doc) => {
+                    console.log("ID already exists in database");
+                });
+            }
+            else {
+                usersRef.set({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    password: password
+                })
+            }
+        })
+    })
     promise.catch(e => alert(e.message)); 
     alert("Signed In");
 }
@@ -36,6 +65,7 @@ auth.onAuthStateChanged(function(user) {
     if(user) {
         var email = user.email;
         alert("Active User " + email);
+        // console.log("Display Name = " + firebase.auth().currentUser.displayName);
         //Take user to app page
         //window.location.href = "app.html";
         //is signed in
@@ -46,27 +76,3 @@ auth.onAuthStateChanged(function(user) {
     }
     
 });
-
-// database work //
-
-var database = firebase.database();
-
-/*function writeUserData(userId, name, email, animal) {
-    alert("Storing user data onto Realtime Database");
-    firebase.database().ref('users/' + userId).set({
-      username: name,
-      email: email,
-      animal: animal
-    });
-  }
-  */
-
- function writeUserData() {
-    alert("Storing user data onto Realtime Database");
-    firebase.database().ref('users/' + 0001).set({
-      username: "Mike",
-      email: "zhang18m@live.unc.edu",
-      animal: "WHALES"
-    });
-  }
-
