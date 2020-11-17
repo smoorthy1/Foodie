@@ -5,7 +5,7 @@ img {
     height: auto;
     max-width:1500px;
     max-height:500px;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .bg-img {
@@ -28,6 +28,14 @@ img {
   text-align: center;
   width: 100%;
   height: 350px;
+}
+
+.home-body {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 15px;
+  margin-bottom: 25px;
+  margin-top: 5px;
+  text-align: center;
 }
 
 .cropped {
@@ -71,7 +79,7 @@ h1 {
 }
 
 p {
-    text-align: left;
+    text-align: justify;
     color: #515051;
     font-family: Bahnschrift;
     font-size: 20px;
@@ -103,6 +111,18 @@ p {
     text-align: center;
 }
 
+.left {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-175%, -55%);
+  color: white;
+  font-family: Ink Free;
+  font-weight: bold;
+  font-size: 100px;
+  text-align: left;
+}
+
 
 .inside-header {
   position: absolute;
@@ -119,7 +139,7 @@ p {
 .footer {
     background-color: #111;
     border-radius: 4px; 
-    width: 100%;
+    width: auto;
     padding: 10px; 
 }
 
@@ -219,7 +239,8 @@ p {
   img.resize {
       width: 400px;
       height: auto;
-      border-radius: 8px;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 
 textarea {
@@ -288,11 +309,20 @@ input[type=submit]:focus {
 }
 
 #newdiv {
-  background-color: lightgreen; 
-  width: 600px;
-  border: 3px solid black;
+  background-color: #ffffff; 
+  width: auto;
+  border: none;
   padding: 20px;
-  margin: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+a {
+  font-family: Ink Free;
+  color: #111;
+  font-size: 20px;
+  font-weight: bolder;
 }
 
 a.button {
@@ -304,3 +334,34 @@ a.button {
   text-decoration: none;
   color: initial;
 }
+
+.food-img {
+  /* height: 600px;
+  width: 600px; */
+  display: inline-block;
+  margin-left: 20px;
+  /* margin-right: 60px; */
+}
+
+
+.food-name {
+  font-family: Ink Free;
+  font-weight: bolder;
+  text-align: center;
+  font-size: 30px;
+}
+
+.thumb-btn {
+  background-color: #ffffff; 
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 6px 12px;
+  outline: none;
+  
+}
+
+.thumb-btn:hover {
+  color: #515051;
+}
+

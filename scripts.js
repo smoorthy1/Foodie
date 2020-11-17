@@ -16,7 +16,7 @@ $(document).ready(() => {
     $('#options').append(`<button type="submit">Submit</button>`);
     */
     const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(body(), footer());
+    $page.append(createHome(), body(), footer());
     $('#root').append(sideBar(), $page);
 
     $('#sidebar').on('mouseover', function(event) {
@@ -39,7 +39,7 @@ $(document).ready(() => {
             success: (result) => {
                 let allRecipes = result.hits;
                 if (allRecipes.length == 0) {
-                    $('#recipe_list').append(`<li>No results</li>`);
+                    //$('#recipe_list').append(`<li>No results</li>`);
                 }
                 else {
                     let randomNum = randomNumber(allRecipes.length);
@@ -51,10 +51,20 @@ $(document).ready(() => {
                     let theUrl = generalInfo["url"];
                     let imageLink = generalInfo["image"];
                     console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
-                    $('#recipe_div').empty().append(`<p>Name: ${name}<p>`);
-                    $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
-                    $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
-                    $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
+                    let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
+                    padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
+                    $('#recipe_div').empty().append($food_img);
+                    let $food_name = $(`<p>${name}<p>`).addClass('food-name');
+                    $('#recipe_div').append($food_name);
+                   
+                    //$('#recipe_div').append(`<p>Calories: ${calories}<p>`);
+                    $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
+                    let $btn_div = $('<div></div>');
+                    let $yes_btn = $(`<button type="button"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
+                    let $no_btn = $(`<button type="button"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
+                    $btn_div.append($no_btn,$yes_btn);
+                    $('#recipe_div').append($btn_div);
+                  
                 }
             },
             error: () => {
@@ -69,8 +79,8 @@ $(document).ready(() => {
 
 export const createHome = function() {
     var $container = $('<div></div>').addClass('container');
-    var $photo = $('<img src="food.jpg" alt="Food">');
-    var $siteName = $('<div>Foodie</div>').addClass('centered');
+    var $photo = $('<img src="foodie_head.jpg" style="max-height:350px;" alt="Foodie">');
+    var $siteName = $('<div>Foodie</div>').addClass('left');
     $container.append($photo, $siteName);
     
     return $container;
@@ -78,11 +88,10 @@ export const createHome = function() {
 
 export const body = function() {
     var $body = $('<div id=newdiv></div>');
-    var $head = $('<h1>Try our Application<h1>');
     let $button = $(`<button id="name_button">Press Me to Test API</button>`);
     let $signOutButton = $(`<button onClick="signOut()" id="signOut">Sign Out Here</button>`);
     var $info = $('<div id=recipe_div></div>');
-    $body.append($head, $button, $signOutButton, $info);
+    $body.append($button, $signOutButton, $info);
     return $body; 
 }
 

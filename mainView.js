@@ -9,7 +9,7 @@ export const createHome = function() {
 }
 
 export const body = function() {
-    var $body = $('<div></div>');
+    var $body = $('<div></div>').addClass('home-body');
     var $head = $('<h1>What is Foodie?<h1>');
     var $blurb = $('<p>Welcome to our recipe website, I hope you are ready to cook! Click on the <b>Application</b> tab to start choosing recipes :)<br><br>Our website aims to bring you the best cooking experience ever. You will be presented with a variety of foods and their respective recipes in our application and choose which ones appeal to you most. If you like it, select that recipe and it will go into your inbox, where you can view all the foods and recipes that you have chosen so far. In the inbox, you will also have the option to open up a detailed recipe for said foods. Hope you enjoy!</p>');
     var $photoGallery = $('<div></div>').addClass('row');
