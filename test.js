@@ -14,12 +14,16 @@ $(document).ready(() => {
 
     const $root = $('#header');
     const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(`<p id="greeting"></p>`);
+    $page.append(`<p id="greeting" style="text-align:right">Welcome</p>`);
+    $root.append(sideBar(), $page);
 
     authg.onAuthStateChanged(function(user) {
         if (firebase.auth().currentUser) {
             let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
             console.log("checkpoint 1");
+            console.log(firebase.auth().currentUser.email);
+            document.getElementById("greeting").innerHTML = `Hello, ${firebase.auth().currentUser.email}`;
+            /*
             usersRef.get().then(function(doc) {
                 if (doc.exists) {
                     console.log("Did it get here?");
@@ -32,14 +36,15 @@ $(document).ready(() => {
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             })
+            */
         }
         else {
             console.log("No current user found");
-            document.getElementById("greeting").innerHTML = `Hello, please sign in to continue!`;
+            document.getElementById("greeting").innerHTML = `Not signed in`;
         }
     });
 
-    $root.append(sideBar(), $page);
+    // $root.append(sideBar(), $page);
 
 
     $('#sidebar').on('mouseover', function(event) {

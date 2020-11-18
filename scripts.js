@@ -1,20 +1,19 @@
 $(document).ready(() => {
 
 
-
+    $('#root').append(`<div id="header"></div>`);
+    $('#header').append(`<p id="greeting" style="text-align:right">Please sign in</p>`);
     authg.onAuthStateChanged(function (user) {
         if (user) {
-            // gets the user UID - VERY IMPORTANT !!!
-            console.log("Display Name = " + firebase.auth().currentUser.uid);
+            console.log("Display Name = " + firebase.auth().currentUser.email);
             window.authUID = firebase.auth().currentUser.uid;
-            // $page.append(`<p id="greeting">Hello, ${firebase.auth().currentUser.displayName}</p>`);
-            //is signed in
+            $('#greeting').text(`Hello, ${firebase.auth().currentUser.email}`);
         }
         else {
             console.log("No one logged in");
+            $('#greeting').text(`Hello, Not signed in`);
         }
     });
-
 
 
     const $page = $('<div id="page"><div>').addClass('main');

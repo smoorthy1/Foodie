@@ -67,6 +67,39 @@ export const sideBar = function() {
 
 // $(function() {
 $(document).ready(() => {
+    $('#root').append(`<div id="header"></div>`);
+    $('#header').append(`<p id="greeting" style="text-align:right">Please sign in</p>`);
+    authg.onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("Display Name = " + firebase.auth().currentUser.email);
+            window.authUID = firebase.auth().currentUser.uid;
+            $('#greeting').text(`Hello, ${firebase.auth().currentUser.email}`);
+        }
+        else {
+            console.log("No one logged in");
+            $('#greeting').text(`Hello, Not signed in`);
+        }
+    });
+
+    const $root = $('#root');
+    const $page = $('<div id="page"><div>').addClass('main');
+    $page.append(header(), footer());
+    $root.append(sideBar(), $page);
+
+
+    $('#sidebar').on('mouseover', function(event) {
+        event.preventDefault();
+        document.getElementById('sidebar').style.width = '250px';
+        document.getElementById('page').style.marginLeft = '250px'; 
+    });
+
+    $('#sidebar').on('mouseout', function(event) {
+        event.preventDefault();
+        document.getElementById('sidebar').style.width = '85px';
+        document.getElementById('page').style.marginLeft = '85px'; 
+    });   
+
+    /*
     auth.onAuthStateChanged(function(user) {
         if(user) {
             window.authUID = firebase.auth().currentUser.uid;
@@ -95,6 +128,7 @@ $(document).ready(() => {
             alert("No Active User");
         }
     });
+    */
     if ($('#root').is('empty')) {
         alert("empty page");
     }
