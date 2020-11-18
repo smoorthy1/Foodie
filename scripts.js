@@ -35,6 +35,18 @@ $(document).ready(() => {
 
     $('#name_button').on('click', (e) => {
         let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
+        if (dairy.checked) {
+            query = query + "&health=alcohol-free";
+        }
+        if (gluten.checked) {
+            query = query + "&health=immuno-supportive";
+        }
+        if (vegan.checked) {
+            query = query + "&health=vegan";
+        }
+        if (peanut.checked) {
+            query = query + "&health=peanut-free";
+        }
         if (snack.checked) {
             query = query + "&mealtype=snack";
         }
@@ -47,18 +59,8 @@ $(document).ready(() => {
         if (dinner.checked) {
             query = query + "&mealtype=dinner";
         }
-        if (dairy.checked) {
-            query = query + "&health=dairy-free";
-        }
-        if (gluten.checked) {
-            query = query + "&health=gluten-free";
-        }
-        if (vegan.checked) {
-            query = query + "&health=vegan";
-        }
-        if (peanut.checked) {
-            query = query + "&health=peanut";
-        }
+      
+        
         $.get({
             url: query,
             success: (result) => {
@@ -176,9 +178,9 @@ export const body = function () {
     var $health=$(`<p>Select Health Avoidances<p>`).addClass('filter-head');
     //var $meal=$(`<p>Select mealtypes for filtered search<p>`);
     let $option5= $(`<br><input type="checkbox" id="dairy">`);
-    let $label5=$(`<label for="dairy">Dairy-Free</label><br>`)
+    let $label5=$(`<label for="dairy">Alcohol-Free</label><br>`)
     let $option6= $(`<input type="checkbox" id="gluten">`);
-    let $label6=$(`<label for="gluten">Gluten-Free</label><br>`)
+    let $label6=$(`<label for="gluten">Immuno-supportive</label><br>`)
     let $option7= $(`<input type="checkbox" id="vegan">`);
     let $label7=$(`<label for="vegan">Vegan</label><br>`)
     let $option8= $(`<input type="checkbox" id="peanut">`);
