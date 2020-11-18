@@ -14,6 +14,20 @@
 	
 	<body>
 		<script>
+			function signOut() {
+				let userId = "";
+				authg.onAuthStateChanged(function (user) {
+					if (user) {
+						console.log("Display Name = " + firebase.auth().currentUser.email);
+						firebase.auth().signOut();
+					}
+					else {
+						console.log("No one logged in");
+					}
+				});
+			}
+		</script>
+		<script>
 			function likeButton() {
 				console.log("liked");
 				authg.onAuthStateChanged(function(user) {
