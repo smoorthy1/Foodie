@@ -21,7 +21,7 @@ function signUp() {
     const promise = auth.createUserWithEmailAndPassword(email.value, password.value);
     promise.catch(e => alert(e.message));
     promise.then(signIn());
-    alert("Signed up, please sign in to start working");
+    console.log("Signed in");
 }
 
 function signIn(){
@@ -61,14 +61,32 @@ function signOut(){
     alert("Signed Out");
 }
 
+function deleteUser() {
+    auth.onAuthStateChanged(function(user) {
+        if(user) {
+            var email = user.email;
+            console.log("Current user = " + auth.currentUser.uid);
+            auth.currentUser.delete().then(function() {
+                console.log("User deleted successfully");
+            }).catch(function(error) {
+                console.log("unexpected user deletion error");  
+            });
+        }
+        else {
+            console.log("No Active User");
+        }
+        
+    });
+}
+
+/*
 auth.onAuthStateChanged(function(user) {
     if(user) {
         var email = user.email;
         alert("Active User " + email);
-        // console.log("Display Name = " + firebase.auth().currentUser.displayName);
+        console.log("Current user = " + auth.currentUser);
         //Take user to app page
         //window.location.href = "app.html";
-        //is signed in
     }
     else {
         alert("No Active User");
@@ -76,3 +94,4 @@ auth.onAuthStateChanged(function(user) {
     }
     
 });
+*/
