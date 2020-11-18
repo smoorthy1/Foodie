@@ -51,6 +51,7 @@ function signIn(){
                 })
             }
         })
+        window.location.href = "app.html"; 
     })
     promise.catch(e => alert(e.message)); 
     alert("Signed In");
