@@ -28,8 +28,8 @@ function signIn(){
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
 
-    //let firstName = document.getElementById("firstName").value;
-    //let lastName = document.getElementById("lastName").value;
+    let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
 
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.then((value) => {
@@ -44,8 +44,8 @@ function signIn(){
             }
             else {
                 usersRef.set({
-                    //first_name: firstName,
-                    //last_name: lastName,
+                    first_name: firstName,
+                    last_name: lastName,
                     email: email,
                     password: password
                 })
