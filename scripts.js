@@ -17,7 +17,7 @@ $(document).ready(() => {
 
 
     const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(createHome(), body(), footer());
+    $page.append(logInHead(), createHome(), body(), footer());
     $('#root').append(sideBar(), $page);
 
     $('#sidebar').on('mouseover', function (event) {
@@ -139,7 +139,14 @@ $(document).ready(() => {
     });
 });
 
+export const logInHead = function() {
+    var $container = $('<div></div>').addClass('account-head'); 
+    var $logIn = $('<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 2px;">Log In</a>');
+    var $logOut = $('<button onClick="signOut()">Log Out</button>').addClass('out-btn'); 
 
+    $container.append($logIn, $logOut); 
+    return $container;
+}
 
 export const createHome = function () {
     var $container = $('<div></div>').addClass('container');
@@ -156,7 +163,7 @@ export const body = function () {
     let $signOutButton = $(`<button onClick="signOut()" id="signOut">Sign Out Here</button>`);
     var $info = $('<div id=recipe_div></div>');
 
-    var $meal = $(`<p>Select mealtypes for filtered search<p>`);
+    var $meal = $(`<p>Select Mealtypes<p>`).addClass('filter-head');
     let $option1 = $(`<br><input type="checkbox" id="breakfast">`);
     let $label1 = $(`<label for="breakfast">Breakfast</label><br>`)
     let $option2 = $(`<input type="checkbox" id="lunch">`);
@@ -166,8 +173,8 @@ export const body = function () {
     let $option4 = $(`<input type="checkbox" id="dinner">`);
     let $label4 = $(`<label for=dinner">Dinner</label><br>`)
 
-    var $health=$(`<p>Select health avoidances for filtered search<p>`);
-    var $meal=$(`<p>Select mealtypes for filtered search<p>`);
+    var $health=$(`<p>Select Health Avoidances<p>`).addClass('filter-head');
+    //var $meal=$(`<p>Select mealtypes for filtered search<p>`);
     let $option5= $(`<br><input type="checkbox" id="dairy">`);
     let $label5=$(`<label for="dairy">Dairy-Free</label><br>`)
     let $option6= $(`<input type="checkbox" id="gluten">`);
@@ -177,7 +184,7 @@ export const body = function () {
     let $option8= $(`<input type="checkbox" id="peanut">`);
     let $label8=$(`<label for=peanut">Peanut-Free</label><br>`)
 
-    $body.append($button, $signOutButton, $info);
+    $body.append($button, $info);
     $body.append($meal, $option1, $label1, $option2, $label2, $option3, $label3, $option4, $label4);
     $body.append($health,$option5, $label5, $option6, $label6, $option7, $label7, $option8, $label8);
     return $body;
