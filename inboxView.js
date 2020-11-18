@@ -1,3 +1,12 @@
+export const logInHead = function() {
+    var $container = $('<div></div>').addClass('account-head'); 
+    var $logIn = $('<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 2px;">Log In</a>');
+    var $logOut = $('<button onClick="signOut()">Log Out</button>').addClass('out-btn'); 
+
+    $container.append($logIn, $logOut); 
+    return $container;
+}
+
 export const header = function() {
     var $container = $('<div></div>').addClass('header');
     var $photo = $('<img src="food2.jpg" alt="Food">').addClass('ibx-img');
@@ -74,7 +83,7 @@ $(document).ready(() => {
 
             const $root = $('#root');
             const $page = $('<div id="page"><div>').addClass('main');
-            $page.append(header(), body(authUID), footer());
+            $page.append(logInHead(), header(), body(authUID), footer());
             $root.append(sideBar(), $page);
         
         

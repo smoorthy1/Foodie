@@ -354,9 +354,43 @@ a.button {
   -moz-appearance: button;
   appearance: button;
   border-style: solid;
-  border-width: 1px;
+  border-width: 2px;
+  /* border: none; */
+  border-radius: 4px;
+  padding: 3px;
   text-decoration: none;
   color: initial;
+  font-size: 15px; 
+}
+
+a.button:hover {
+  color: #fff;
+  background-color: #111;
+}
+
+.account-head {
+  padding: 4px; 
+}
+
+.out-btn {
+  position: absolute; 
+  right: 10px; 
+  top: 2px;
+  background-color: #fff;
+  color: #111;
+  font-family: Ink Free;
+  font-weight: bolder;
+  font-size: 15px;
+  cursor: pointer;
+  /* border: none; */
+  padding: 3px;
+  border-radius: 4px;
+  
+}
+
+.out-btn:hover {
+  color: #fff;
+  background-color: #111;
 }
 
 .food-img {
@@ -396,4 +430,10 @@ a.button {
 
 .recipe_card p {
   color: white;
+}
+
+.filter-head {
+  font-family: Ink Free; 
+  font-weight: bolder;
+  font-size: 18px;
 }
