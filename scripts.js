@@ -1,7 +1,12 @@
 $(document).ready(() => {
 
 
-    $('#root').append(`<div id="header"></div>`);
+    // $('#root').append(`<div id="header"></div>`);
+
+    const $page = $('<div id="page"><div>').addClass('main');
+    $page.append(logInHead(), createHome(), body(), footer());
+    $('#root').append(sideBar(), $page);
+
     $('#header').append(`<p id="greeting" style="text-align:right">Please sign in</p>`);
     authg.onAuthStateChanged(function (user) {
         if (user) {
@@ -15,11 +20,6 @@ $(document).ready(() => {
         }
     });
 
-
-    const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(logInHead(), createHome(), body(), footer());
-    $('#root').append(sideBar(), $page);
-
     $('#sidebar').on('mouseover', function (event) {
         event.preventDefault();
         document.getElementById('sidebar').style.width = '250px';
@@ -30,6 +30,40 @@ $(document).ready(() => {
         event.preventDefault();
         document.getElementById('sidebar').style.width = '85px';
         document.getElementById('page').style.marginLeft = '85px';
+    });
+
+    $('#thumbsUpBtn').click(function () {
+        console.log('likeButton clicked');
+        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+        // window.authUID = firebase.auth().currentUser.uid;
+        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+        usersRef.get().then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                usersRef.onSnapshot((doc) => {
+                    console.log(doc);
+
+                    let recipe_object = {
+                        name: name,
+                        calories: calories,
+                        url: theUrl,
+                        image: imageLink
+                    }
+                    usersRef.update({
+                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                    })
+
+                    console.log("ID already exists in database");
+                });
+            }
+            else {
+                usersRef.set({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    password: password
+                })
+            }
+        })
     });
 
 
@@ -87,7 +121,7 @@ $(document).ready(() => {
                     //$('#recipe_div').append(`<p>Calories: ${calories}<p>`);
                     $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
                     let $btn_div = $('<div></div>');
-                    let $yes_btn = $(`<button type="button"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
+                    let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
                     let $no_btn = $(`<button type="button"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
                     $btn_div.append($no_btn,$yes_btn);
                     $('#recipe_div').append($btn_div);
@@ -97,40 +131,8 @@ $(document).ready(() => {
                     // $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
                     // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                     // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
-                    $('#recipe_div').append(`<button id="likeButton">LIKE</button>`);
-                    $('#likeButton').click(function () {
-                        console.log('likeButton clicked');
-                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
-                        // window.authUID = firebase.auth().currentUser.uid;
-                        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-                        usersRef.get().then((docSnapshot) => {
-                            if (docSnapshot.exists) {
-                                usersRef.onSnapshot((doc) => {
-                                    console.log(doc);
-
-                                    let recipe_object = {
-                                        name: name,
-                                        calories: calories,
-                                        url: theUrl,
-                                        image: imageLink
-                                    }
-                                    usersRef.update({
-                                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
-                                    })
-
-                                    console.log("ID already exists in database");
-                                });
-                            }
-                            else {
-                                usersRef.set({
-                                    first_name: firstName,
-                                    last_name: lastName,
-                                    email: email,
-                                    password: password
-                                })
-                            }
-                        })
-                    });
+                    // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+                  
                 }
             },
             error: () => {
@@ -141,8 +143,10 @@ $(document).ready(() => {
     });
 });
 
+
+
 export const logInHead = function() {
-    var $container = $('<div></div>').addClass('account-head'); 
+    var $container = $('<div id="header"></div>').addClass('account-head'); 
     var $logIn = $('<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 2px;">Log In</a>');
     var $logOut = $('<button onClick="signOut()">Log Out</button>').addClass('out-btn'); 
 
@@ -160,35 +164,60 @@ export const createHome = function () {
 }
 export const body = function () {
 
-    var $body = $('<div id=newdiv></div>');
-    let $button = $(`<button id="name_button">Press Me to Test API</button>`);
+    var $body = $('<div id=newdiv></div>').addClass('body-container');
+    let $button = $(`<button id="name_button">Apply</button>`).addClass('filter-btn');
     let $signOutButton = $(`<button onClick="signOut()" id="signOut">Sign Out Here</button>`);
-    var $info = $('<div id=recipe_div></div>');
+    var $info = $('<div id=recipe_div></div>').addClass('recipe-div');
 
+    var $filterSec = $('<div>Refine By</div>').addClass('filter-sec');
+
+    var $mealFilter = $('<div></div>').addClass('filter-div');
     var $meal = $(`<p>Select Mealtypes<p>`).addClass('filter-head');
-    let $option1 = $(`<br><input type="checkbox" id="breakfast">`);
-    let $label1 = $(`<label for="breakfast">Breakfast</label><br>`)
-    let $option2 = $(`<input type="checkbox" id="lunch">`);
-    let $label2 = $(`<label for="lunch">Lunch</label><br>`)
-    let $option3 = $(`<input type="checkbox" id="snack">`);
-    let $label3 = $(`<label for="snack">Snack</label><br>`)
-    let $option4 = $(`<input type="checkbox" id="dinner">`);
-    let $label4 = $(`<label for=dinner">Dinner</label><br>`)
+    let $option1 = $(`<input type="checkbox" id="breakfast">`);
+    let $span1 = $('<span class="checkmark"></span>');
+    let $label1 = $(`<label class="check" for="breakfast">Breakfast</label>`).append($option1, $span1);
 
+    let $option2 = $(`<input type="checkbox" id="lunch">`);
+    let $span2 = $('<span class="checkmark"></span>');
+    let $label2 = $(`<label class="check" for="lunch">Lunch</label>`).append($option2, $span2);
+
+    let $option3 = $(`<input type="checkbox" id="snack">`);
+    let $span3 = $('<span class="checkmark"></span>');
+    let $label3 = $(`<label class="check" for="snack">Snack</label>`).append($option3, $span3);
+
+    let $option4 = $(`<input type="checkbox" id="dinner">`);
+    let $span4 = $('<span class="checkmark"></span>');
+    let $label4 = $(`<label class="check" for="dinner">Dinner</label>`).append($option4, $span4);
+   
+
+    var $healthFilter = $('<div></div>').addClass('filter-div');
     var $health=$(`<p>Select Health Avoidances<p>`).addClass('filter-head');
     //var $meal=$(`<p>Select mealtypes for filtered search<p>`);
-    let $option5= $(`<br><input type="checkbox" id="dairy">`);
-    let $label5=$(`<label for="dairy">Alcohol-Free</label><br>`)
+    let $option5= $(`<input type="checkbox" id="dairy">`);
+    let $span5 = $('<span class="checkmark"></span>');
+    let $label5=$(`<label class="check" for="dairy">Alcohol-Free</label>`).append($option5, $span5);
+    
     let $option6= $(`<input type="checkbox" id="gluten">`);
-    let $label6=$(`<label for="gluten">Immuno-supportive</label><br>`)
+    let $span6 = $('<span class="checkmark"></span>');
+    let $label6=$(`<label class="check" for="gluten">Immuno-supportive</label>`).append($option6, $span6);
+    
     let $option7= $(`<input type="checkbox" id="vegan">`);
-    let $label7=$(`<label for="vegan">Vegan</label><br>`)
+    let $span7 = $('<span class="checkmark"></span>');
+    let $label7=$(`<label class="check" for="vegan">Vegan</label>`).append($option7, $span7);
+    
     let $option8= $(`<input type="checkbox" id="peanut">`);
-    let $label8=$(`<label for=peanut">Peanut-Free</label><br>`)
+    let $span8 = $('<span class="checkmark"></span>');
+    let $label8=$(`<label class="check" for="peanut">Peanut-Free</label>`).append($option8, $span8);
 
-    $body.append($button, $info);
-    $body.append($meal, $option1, $label1, $option2, $label2, $option3, $label3, $option4, $label4);
-    $body.append($health,$option5, $label5, $option6, $label6, $option7, $label7, $option8, $label8);
+    
+   
+
+
+    $mealFilter.append($meal, $label1, $label2, $label3, $label4);
+    $healthFilter.append($health, $label5,  $label6,  $label7,  $label8);
+    $filterSec.append($mealFilter, $healthFilter, $button);
+    $body.append($filterSec, $info);
+   
     return $body;
 }
 

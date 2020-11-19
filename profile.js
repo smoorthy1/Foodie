@@ -25,8 +25,16 @@ function signUp() {
 }
 
 function signIn(){
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
+    var email = null;
+    var password = null;
+
+    if(document.getElementById("email").value != null && document.getElementById("password").value != null) {
+        email = document.getElementById("email").value;
+        password = document.getElementById("password").value;
+    } else {
+        email = document.getElementById("emailLogin").value;
+        password = document.getElementById("passwordLogin").value;
+    }
 
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
@@ -96,3 +104,6 @@ auth.onAuthStateChanged(function(user) {
     
 });
 */
+
+
+

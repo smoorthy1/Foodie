@@ -152,7 +152,7 @@ p {
 }
 
 .sidebar {
-    height: 92%;
+    height: 100%;
     width: 85px;
     position: fixed;
     z-index: 1;
@@ -261,8 +261,20 @@ textarea {
 label {
   font-family: Ink Free;
   font-weight: bold; 
-  font-size: 20px; 
+  font-size: 15px; 
   text-align: left;
+  position: relative;
+  display: block;
+  left: 10px;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+
 }
 
 input[type=text] {
@@ -369,7 +381,19 @@ a.button:hover {
 }
 
 .account-head {
-  padding: 4px; 
+  padding: 10px; 
+}
+
+#greeting {
+  top:20px;
+  right: 150px;
+  text-align: right;
+  vertical-align: top;
+  position: absolute;
+  line-height: 0px;
+  font-family: Ink Free;
+  font-weight: bolder;
+  font-size: 18px;
 }
 
 .out-btn {
@@ -397,7 +421,7 @@ a.button:hover {
   /* height: 600px;
   width: 600px; */
   display: inline-block;
-  margin-left: 20px;
+  /* margin-left: 10px; */
   /* margin-right: 60px; */
 }
 
@@ -420,7 +444,7 @@ a.button:hover {
 }
 
 .thumb-btn:hover {
-  color: #515051;
+  color: #B5A493;
 }
 
 .recipe_card {
@@ -433,7 +457,233 @@ a.button:hover {
 }
 
 .filter-head {
-  font-family: Ink Free; 
+  /* font-family: Ink Free;  */
   font-weight: bolder;
-  font-size: 18px;
+  font-size: 15px;
 }
+
+
+
+
+
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+/* body {
+	background: #175690;
+	font-family: 'open sans', sans-serif;
+} */
+.forms {
+	background: #fff;
+	box-shadow: 0 0 10px #111;
+	margin: 0px auto;
+	max-width: 500px;
+	overflow: hidden;
+	position: relative;
+  padding: 0;
+}
+.forms h1 {
+	padding: 0 0 20px 0;
+	font-size: 30px;
+	color: #111;
+	font-weight: bolder;
+	text-align: center;
+}
+
+.forms form { 
+  padding: 150px; 
+
+}
+#signup { display: none; }
+/* .tab-content > div:last-child {
+  display: none;
+} */
+
+.forms .tab-group {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.forms .tab-group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+.forms .tab-group li a {
+  display: block;
+	text-decoration: none;
+	padding: 15px;
+	background: #e5e6e7;
+	color: #111;
+	font-size: 20px;
+	float: left;
+	width: 50%;
+	text-align: center;
+	border-top: 3px solid transparent;
+	-moz-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	-webkit-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+}
+.forms .tab-group li a:hover {
+	background: #111;
+	color: #fff;
+}
+.forms .tab-group .active a {
+	background: #fff;
+	color: #111;
+	border-top: 3px solid #111;
+}
+.forms input {
+	font-size: 16px;
+	display: block;
+	width: 100%;
+	padding: 10px 20px;
+	border: 1px solid #ddd;
+	color: #666;
+	border-radius: 0;
+	margin-bottom: 20px;
+	-moz-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	-webkit-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+}
+.forms input:focus {
+	outline: 0;
+	border-color: #111;
+}
+
+.forms .button {
+	border: 0;
+	outline: none;
+	border-radius: 4px;
+	padding: 10px 10px;
+	font-size: 18px;
+	font-weight: 300;
+  text-transform: uppercase;
+  font-family: Ink Free;
+	letter-spacing: 2px;
+	background: #111;
+  color: #ffffff;
+  float: right;
+	cursor: pointer;
+	-moz-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	-webkit-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+}
+
+.forms .button:hover, .button:focus { 
+  background: #B5A493; 
+}
+
+/* input[type='checkbox'] {
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+}
+
+input[type='checkbox']:checked:after {
+  background: #111;
+  color: #fff;
+} */
+
+.check input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background-color: #eee;
+}
+
+.check:hover input ~ .checkmark {
+  background-color: #666;
+}
+
+.check input:checked ~ .checkmark {
+  background-color: #111;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.check input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.check .checkmark:after {
+  left: 5px;
+  top: 1px;
+  width: 3px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.filter-div {
+  width: 200px;
+}
+
+.filter-sec {
+  width: 200px;
+  /* float: left; */
+  text-align: left;
+  font-weight: bolder;
+  font-size: 16px;
+  color: #111;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+
+}
+
+.filter-btn {
+  border: 0;
+	outline: none;
+	border-radius: 4px;
+	padding: 5px 5px;
+	font-size: 14px;
+	font-weight: 300;
+  font-family: Ink Free;
+	background: #111;
+  color: #ffffff;
+  /* float: right; */
+	cursor: pointer;
+}
+
+.filter-btn:hover {
+  background-color: #B5A493;
+}
+
+.body-container {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  grid-gap: 0px;
+}
+
+
+
+
+
+
+

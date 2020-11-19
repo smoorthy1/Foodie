@@ -1,5 +1,5 @@
 export const logInHead = function() {
-    var $container = $('<div></div>').addClass('account-head'); 
+    var $container = $('<div id="header"></div>').addClass('account-head'); 
     var $logIn = $('<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 2px;">Log In</a>');
     var $logOut = $('<button onClick="signOut()">Log Out</button>').addClass('out-btn'); 
 
@@ -54,8 +54,13 @@ export const sideBar = function() {
 $(document).ready(() => {
     const $root = $('#root');
 
-    $('#root').append(`<div id="header"></div>`);
-    $('#header').append(`<p id="greeting" style="text-align:right">Please sign in</p>`);
+    // $('#root').append(`<div id="header"></div>`);
+
+    const $page = $('<div id="page"><div>').addClass('main');
+    $page.append(logInHead(), createHome(), body(), footer());
+    $root.append(sideBar(), $page);
+
+    $('#header').append(`<p id="greeting">Please sign in</p>`);
     authg.onAuthStateChanged(function (user) {
         if (user) {
             console.log("Display Name = " + firebase.auth().currentUser.email);
@@ -66,10 +71,6 @@ $(document).ready(() => {
             $('#greeting').text(`Hello, Not signed in`);
         }
     });
-
-    const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(logInHead(), createHome(), body(), footer());
-    $root.append(sideBar(), $page);
 
 
     $('#sidebar').on('mouseover', function(event) {

@@ -116,6 +116,7 @@ $(document).ready(() => {
         }
         else {
             alert("No Active User");
+            window.location.href = 'profile.html'; 
         }
     });
     

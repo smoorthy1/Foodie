@@ -10,11 +10,45 @@ const sideBar = function() {
     return $sideBar;
 }
 
+const signInPage = function() {
+    var $container = $('<div></div>').addClass('forms');
+    var $tabs = $('<ul class="tab-group"></ul>');
+    var $logInTab = $('<li class="tab active"><a href="#login">Log In</a></li>');
+    var $signUpTab = $('<li class="tab"><a href="#signup">Sign Up</a></li>');
+    $tabs.append($logInTab, $signUpTab);
+
+    var $loginForm = $('<form action="#" id="login"></form>');
+    var $loginTitle = $('<h1>Login to Foodie</h1>');
+    var $loginFormInput = $('<div class="input-field"></div>');
+    var $email = $('<input type="email" placeholder="email" id="emailLogin" required="email" />');
+    var $pass = $('<input type="password" placeholder="password" id="passwordLogin" required/>');
+    var $loginBtn = $('<input type="submit" value="Login" id="signIn" class="button" onClick="signIn()"/>');
+    $loginFormInput.append($email, $pass, $loginBtn);
+    $loginForm.append($loginTitle, $loginFormInput);
+
+    var $signupForm = $('<form action="#" id="signup"></form>');
+    var $signupTitle = $('<h1>Sign Up to Foodie</h1>');
+    var $signupFormInput = $('<div class="input-field"></div>');
+    var $signupEmail = $('<input type="email" placeholder="email" id="email" required="email" />');
+    var $signupPass = $('<input type="password" placeholder="password" id="password" required/>')
+    var $first = $('<input type="text" placeholder="first name" id="firstName"/>');
+    var $last = $('<input type="text" placeholder="last name" id="lastName"/>');
+    var $signupBtn = $('<input type="submit" value="Sign up" id="signUpbtn" class="button" onClick="signUp()"/>');
+    $signupFormInput.append($signupEmail, $signupPass, $first, $last, $signupBtn); 
+    $signupForm.append($signupTitle, $signupFormInput); 
+
+    $container.append($tabs, $loginForm, $signupForm); 
+
+    return $container; 
+
+}
+
 $(document).ready(() => {
 
     const $root = $('#header');
     const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(`<p id="greeting" style="text-align:right">Welcome</p>`);
+    //$page.append(`<p id="greeting">Welcome</p>`);
+    $page.append(signInPage());
     $root.append(sideBar(), $page);
 
     authg.onAuthStateChanged(function(user) {
@@ -22,7 +56,7 @@ $(document).ready(() => {
             let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
             console.log("checkpoint 1");
             console.log(firebase.auth().currentUser.email);
-            document.getElementById("greeting").innerHTML = `Hello, ${firebase.auth().currentUser.email}`;
+            //document.getElementById("greeting").innerHTML = `Hello, ${firebase.auth().currentUser.email}`;
             /*
             usersRef.get().then(function(doc) {
                 if (doc.exists) {
@@ -40,11 +74,22 @@ $(document).ready(() => {
         }
         else {
             console.log("No current user found");
-            document.getElementById("greeting").innerHTML = `Not signed in`;
+            //document.getElementById("greeting").innerHTML = `Not signed in`;
         }
     });
 
     // $root.append(sideBar(), $page);
+
+    $('.tab a').on('click', function (e) {
+        e.preventDefault();
+         
+        $(this).parent().addClass('active');
+        $(this).parent().siblings().removeClass('active');
+         
+        var href = $(this).attr('href');
+        $('.forms > form').hide();
+        $(href).fadeIn(500);
+      });
 
 
     $('#sidebar').on('mouseover', function(event) {
