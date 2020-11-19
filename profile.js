@@ -15,7 +15,7 @@ const db = firebase.firestore();
 window.authg = firebase.auth();
 const auth = firebase.auth();
 
-function signUp() {
+export function signUp() {
     var email = document.getElementById("email");
     var password = document.getElementById("password");
     const promise = auth.createUserWithEmailAndPassword(email.value, password.value);
@@ -24,7 +24,7 @@ function signUp() {
     console.log("Signed in");
 }
 
-function signIn(){
+export function signIn(){
     var email = null;
     var password = null;
 
@@ -35,7 +35,7 @@ function signIn(){
         email = document.getElementById("emailLogin").value;
         password = document.getElementById("passwordLogin").value;
     }
-
+    
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
 
@@ -65,12 +65,12 @@ function signIn(){
     alert("Signed In");
 }
 
-function signOut(){ 
+export function signOut(){ 
     auth.signOut();
     alert("Signed Out");
 }
 
-function deleteUser() {
+export function deleteUser() {
     auth.onAuthStateChanged(function(user) {
         if(user) {
             var email = user.email;
