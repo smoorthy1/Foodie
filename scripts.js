@@ -32,7 +32,8 @@ $(document).ready(() => {
         document.getElementById('page').style.marginLeft = '85px';
     });
 
-    $('#thumbsUpBtn').click(function () {
+    $('#thumbsUpBtn').click(function (event) {
+        event.preventDefault();
         console.log('likeButton clicked');
         console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
         // window.authUID = firebase.auth().currentUser.uid;
@@ -63,7 +64,13 @@ $(document).ready(() => {
                     password: password
                 })
             }
+            nextRecipe();
         })
+    });
+
+    $('#thumbsDownBtn').on('click', function(event) {
+        event.preventDefault();
+        nextRecipe();
     });
 
 
@@ -122,7 +129,7 @@ $(document).ready(() => {
                     $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
                     let $btn_div = $('<div></div>');
                     let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
-                    let $no_btn = $(`<button type="button"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
+                    let $no_btn = $(`<button type="submit" id="thumbsDownBtn"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
                     $btn_div.append($no_btn,$yes_btn);
                     $('#recipe_div').append($btn_div);
                   
@@ -143,6 +150,132 @@ $(document).ready(() => {
     });
 });
 
+export function nextRecipe() {
+    let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
+    if (dairy.checked) {
+        query = query + "&health=alcohol-free";
+    }
+    if (gluten.checked) {
+        query = query + "&health=immuno-supportive";
+    }
+    if (vegan.checked) {
+        query = query + "&health=vegan";
+    }
+    if (peanut.checked) {
+        query = query + "&health=peanut-free";
+    }
+    if (snack.checked) {
+        query = query + "&mealtype=snack";
+    }
+    if (breakfast.checked) {
+        query = query + "&mealtype=breakfast";
+    }
+    if (lunch.checked) {
+        query = query + "&mealtype=lunch";
+    }
+    if (dinner.checked) {
+        query = query + "&mealtype=dinner";
+    }
+
+    $.ajax({
+        url: query,
+        type: 'get',
+        dataType: 'json',
+        success: (result) => {
+            let allRecipes = result.hits;
+            if (allRecipes.length == 0) {
+                //$('#recipe_list').append(`<li>No results</li>`);
+            }
+            else {
+                let randomNum = randomNumber(allRecipes.length);
+                let recipe = allRecipes[randomNum];
+                console.log(recipe);
+                let generalInfo = recipe["recipe"];
+                let calories = generalInfo["calories"];
+                let name = generalInfo["label"];
+                let theUrl = generalInfo["url"];
+                let imageLink = generalInfo["image"];
+                console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
+                let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
+                padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
+                $('#recipe_div').empty().append($food_img);
+                let $food_name = $(`<p>${name}<p>`).addClass('food-name');
+                $('#recipe_div').append($food_name);
+               
+                //$('#recipe_div').append(`<p>Calories: ${calories}<p>`);
+                $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
+                let $btn_div = $('<div></div>');
+                let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
+                let $no_btn = $(`<button type="submit" id="thumbsDownBtn"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
+                $btn_div.append($no_btn,$yes_btn);
+                $('#recipe_div').append($btn_div);
+              
+                console.log("Current user = " + authg.currentUser.uid);
+                // $('#recipe_div').empty().append(`<p>Name: ${name}<p>`);
+                // $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
+                // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
+                // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
+                // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+              
+            }
+        },
+        error: () => {
+            console.log("Failed!");
+        },
+    });
+
+}
+
+export function getRecipe() {
+    let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
+        
+        $.ajax({
+            url: query,
+            type: 'get',
+            dataType: 'json',
+            success: (result) => {
+                let allRecipes = result.hits;
+                if (allRecipes.length == 0) {
+                    //$('#recipe_list').append(`<li>No results</li>`);
+                }
+                else {
+                    let randomNum = randomNumber(allRecipes.length);
+                    let recipe = allRecipes[randomNum];
+                    console.log(recipe);
+                    let generalInfo = recipe["recipe"];
+                    let calories = generalInfo["calories"];
+                    let name = generalInfo["label"];
+                    let theUrl = generalInfo["url"];
+                    let imageLink = generalInfo["image"];
+                    console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
+                    let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
+                    padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
+                    $('#recipe_div').empty().append($food_img);
+                    let $food_name = $(`<p>${name}<p>`).addClass('food-name');
+                    $('#recipe_div').append($food_name);
+                   
+                    //$('#recipe_div').append(`<p>Calories: ${calories}<p>`);
+                    $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
+                    let $btn_div = $('<div></div>');
+                    let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
+                    let $no_btn = $(`<button type="submit" id="thumbsDownBtn"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
+                    $btn_div.append($no_btn,$yes_btn);
+                    $('#recipe_div').append($btn_div);
+                  
+                    console.log("Current user = " + authg.currentUser.uid);
+                    // $('#recipe_div').empty().append(`<p>Name: ${name}<p>`);
+                    // $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
+                    // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
+                    // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
+                    // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+                  
+                }
+            },
+            error: () => {
+                console.log("Failed!");
+            },
+        });
+}
 
 
 export const logInHead = function() {
@@ -209,14 +342,11 @@ export const body = function () {
     let $span8 = $('<span class="checkmark"></span>');
     let $label8=$(`<label class="check" for="peanut">Peanut-Free</label>`).append($option8, $span8);
 
-    
-   
-
-
     $mealFilter.append($meal, $label1, $label2, $label3, $label4);
     $healthFilter.append($health, $label5,  $label6,  $label7,  $label8);
     $filterSec.append($mealFilter, $healthFilter, $button);
     $body.append($filterSec, $info);
+    getRecipe();
    
     return $body;
 }

@@ -188,6 +188,7 @@ p {
   .material-icons,
   .icon-text {
     vertical-align: middle;
+    font-family: Ink Free;
   }
 
 .material-icons {
@@ -355,7 +356,7 @@ input[type=submit]:focus {
 }
 
 a {
-  font-family: Ink Free;
+  font-family: Bahnschrift;
   color: #111;
   font-size: 20px;
   font-weight: bolder;
@@ -402,7 +403,7 @@ a.button:hover {
   top: 2px;
   background-color: #fff;
   color: #111;
-  font-family: Ink Free;
+  font-family: Bahnschrift;
   font-weight: bolder;
   font-size: 15px;
   cursor: pointer;
@@ -427,7 +428,7 @@ a.button:hover {
 
 
 .food-name {
-  font-family: Ink Free;
+  font-family: Bahnschrift;
   font-weight: bolder;
   text-align: center;
   font-size: 30px;
@@ -448,7 +449,7 @@ a.button:hover {
 }
 
 .recipe_card {
-  background-color: green;
+  background-color: #B5A493;
   border-style: solid;
 }
 
@@ -654,6 +655,7 @@ input[type='checkbox']:checked:after {
   color: #111;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 10px;
+  border-radius: 4px;
 
 }
 
@@ -667,7 +669,7 @@ input[type='checkbox']:checked:after {
   font-family: Ink Free;
 	background: #111;
   color: #ffffff;
-  /* float: right; */
+  float: right;
 	cursor: pointer;
 }
 
