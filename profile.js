@@ -25,6 +25,7 @@ function signUp() {
 }
 
 function signIn(){
+    console.log("trying to sign in");
     var email = null;
     var password = null;
 
