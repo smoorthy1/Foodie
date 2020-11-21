@@ -1,7 +1,7 @@
 export const logInHead = function() {
     var $container = $('<div></div>').addClass('account-head'); 
     var $logIn = $('<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 2px;">Log In</a>');
-    var $logOut = $('<button onClick="signOut()">Log Out</button>').addClass('out-btn'); 
+    var $logOut = $('<button id="logout">Log Out</button>').addClass('out-btn'); 
 
     $container.append($logIn, $logOut); 
     return $container;
@@ -74,6 +74,19 @@ export const sideBar = function() {
     return $sideBar;
 }
 
+function signOut() {
+    let userId = "";
+    authg.onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("Display Name = " + firebase.auth().currentUser.email);
+            firebase.auth().signOut();
+        }
+        else {
+            console.log("No one logged in");
+        }
+    });
+}
+
 // $(function() {
 $(document).ready(() => {
     $('#root').append(`<div id="header"></div>`);
@@ -99,7 +112,11 @@ $(document).ready(() => {
             const $page = $('<div id="page"><div>').addClass('main');
             $page.append(logInHead(), header(), body(authUID), footer());
             $root.append(sideBar(), $page);
-        
+
+            $('#logout').on('click', function(event) {
+                event.preventDefault();
+                signOut();
+            });
         
             $('#sidebar').on('mouseover', function(event) {
                 event.preventDefault();
