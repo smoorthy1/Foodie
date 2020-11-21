@@ -15,11 +15,11 @@
 	<body>
 		<script>
 			function signOut() {
-				let userId = "";
 				authg.onAuthStateChanged(function (user) {
 					if (user) {
 						console.log("Display Name = " + firebase.auth().currentUser.email);
 						firebase.auth().signOut();
+						window.location.href = "profile.html"; 
 					}
 					else {
 						console.log("No one logged in");

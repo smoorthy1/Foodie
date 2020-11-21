@@ -41,9 +41,9 @@ export const body = function(id) {
                 let url = recipe.url;
                 let recipe_card = `<div class="recipe_card" id="recipeCard_${recipeCounter}">
                                         <p>Recipe name: ${name}</p>
-                                        <p>Recipe name: ${calories}</p>
-                                        <p>Recipe name: ${image}</p>
-                                        <p>Recipe name: ${url}</p>
+                                        <p>Calories: ${calories}</p>
+                                        <p>Image URL: ${image}</p>
+                                        <p>Recipe URL: ${url}</p>
                                         <button id="deleteRecipe">Delete</button>
                                     </div>`
                 $body.append(recipe_card);

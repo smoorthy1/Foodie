@@ -37,56 +37,11 @@ $(document).ready(() => {
         document.getElementById('page').style.marginLeft = '85px';
     });
 
-    $(document).on('click', '#thumbsUpBtn', function(event) {
-        console.log('thumbs up');
-        event.preventDefault();
-        console.log('likeButton clicked');
-        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
-        // window.authUID = firebase.auth().currentUser.uid;
-        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-        usersRef.get().then((docSnapshot) => {
-            if (docSnapshot.exists) {
-                usersRef.onSnapshot((doc) => {
-                    console.log("Here is the doc ");
-                    console.log(doc);
-                    console.log("End of doc");
-
-                    let recipe_object = {
-                        name: recipeDat[0],
-                        // calories: calories,
-                        url: recipeDat[1],
-                        image: recipeDat[2]
-                    }
-                    usersRef.update({
-                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
-                    })
-
-                    console.log("ID already exists in database");
-                });
-            }
-            else {
-                usersRef.set({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    password: password
-                })
-            }
-            nextRecipe();
-        })
-    });
-
     $(document).on('click', '#thumbsDownBtn', function(event) {
         event.preventDefault();
         console.log("thumbs down");
         nextRecipe();
     });
-    // $('#thumbsDownBtn').on('click', function(event) {
-    //     event.preventDefault();
-    //     console.log("thumbs down");
-    //     nextRecipe();
-    // });
-
 
     $('#name_button').on('click', (e) => {
         let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
@@ -121,7 +76,7 @@ $(document).ready(() => {
             success: (result) => {
                 let allRecipes = result.hits;
                 if (allRecipes.length == 0) {
-                    //$('#recipe_list').append(`<li>No results</li>`);
+                    alert("No results");
                 }
                 else {
                     let randomNum = randomNumber(allRecipes.length);
@@ -153,6 +108,42 @@ $(document).ready(() => {
                     // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                     // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
                     // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+                    $(document).on('click', '#thumbsUpBtn', function(event) {
+                        console.log('thumbs up');
+                        event.preventDefault();
+                        console.log('likeButton clicked');
+                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+                        // window.authUID = firebase.auth().currentUser.uid;
+                        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                        usersRef.get().then((docSnapshot) => {
+                            if (docSnapshot.exists) {
+                                usersRef.onSnapshot((doc) => {
+                                    console.log(doc);
+                
+                                    let recipe_object = {
+                                        name: name,
+                                        calories: calories,
+                                        url: theUrl,
+                                        image: imageLink
+                                    }
+                                    usersRef.update({
+                                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                    })
+                
+                                    console.log("ID already exists in database");
+                                });
+                            }
+                            else {
+                                usersRef.set({
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    email: email,
+                                    password: password
+                                })
+                            }
+                            nextRecipe();
+                        })
+                    });
                   
                 }
             },
@@ -230,6 +221,42 @@ export function nextRecipe() {
                 // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                 // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
                 // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+                $(document).on('click', '#thumbsUpBtn', function(event) {
+                    console.log('thumbs up');
+                    event.preventDefault();
+                    console.log('likeButton clicked');
+                    console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+                    // window.authUID = firebase.auth().currentUser.uid;
+                    let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                    usersRef.get().then((docSnapshot) => {
+                        if (docSnapshot.exists) {
+                            usersRef.onSnapshot((doc) => {
+                                console.log(doc);
+            
+                                let recipe_object = {
+                                    name: name,
+                                    // calories: calories,
+                                    url: theUrl,
+                                    image: imageLink
+                                }
+                                usersRef.update({
+                                    recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                })
+            
+                                console.log("ID already exists in database");
+                            });
+                        }
+                        else {
+                            usersRef.set({
+                                first_name: firstName,
+                                last_name: lastName,
+                                email: email,
+                                password: password
+                            })
+                        }
+                        nextRecipe();
+                    })
+                });
               
             }
         },
@@ -297,13 +324,43 @@ export function getRecipe() {
                     $('#recipe_div').append($btn_div);
                   
                     console.log("Current user = " + authg.currentUser.uid);
-                    // $('#recipe_div').empty().append(`<p>Name: ${name}<p>`);
-                    // $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
-                    // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
-                    // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
-                    // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
 
-                  
+                    // $(document).on('click', '#thumbsUpBtn', function(event) {
+                    $('#thumbsUpBtn').click(function() {
+                        // event.preventDefault();
+                        console.log('likeButton clicked');
+                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+                        // window.authUID = firebase.auth().currentUser.uid;
+                        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                        usersRef.get().then((docSnapshot) => {
+                            if (docSnapshot.exists) {
+                                usersRef.onSnapshot((doc) => {
+                                    console.log(doc);
+                
+                                    let recipe_object = {
+                                        name: name,
+                                        calories: calories,
+                                        url: theUrl,
+                                        image: imageLink
+                                    }
+                                    usersRef.update({
+                                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                    })
+                
+                                    console.log("ID already exists in database");
+                                });
+                            }
+                            else {
+                                usersRef.set({
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    email: email,
+                                    password: password
+                                })
+                            }
+                            nextRecipe();
+                        })
+                    });
                 }
             },
             error: () => {
