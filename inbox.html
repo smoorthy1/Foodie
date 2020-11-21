@@ -19,6 +19,21 @@
 		
 		<div id="root"></div>
 
+		<script>
+			function signOut() {
+				let userId = "";
+				authg.onAuthStateChanged(function (user) {
+					if (user) {
+						console.log("Display Name = " + firebase.auth().currentUser.email);
+						firebase.auth().signOut();
+					}
+					else {
+						console.log("No one logged in");
+					}
+				});
+			}
+		</script>
+
 		<script src="node_modules/jquery/dist/jquery.js"></script>
 		<script src="inboxView.js" type="module"></script>
 
