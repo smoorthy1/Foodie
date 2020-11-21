@@ -1,3 +1,12 @@
+export const logInHead = function() {
+    var $container = $('<div id="header"></div>').addClass('account-head'); 
+    var $logIn = $('<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 2px;">Log In</a>');
+    var $logOut = $('<button id="logout">Log Out</button>').addClass('out-btn'); 
+
+    $container.append($logIn, $logOut); 
+    return $container;
+}
+
 export const createHome = function() {
     var $container = $('<div></div>').addClass('container');
     var $photo = $('<img src="food.jpg" alt="Food">');
@@ -35,18 +44,48 @@ export const sideBar = function() {
     $('<a href="index.html"><span><i class="material-icons">home</i><span class="icon-text">Home</span></a><br>').appendTo($sideBar);
     $('<a href="app.html"><span><i class="material-icons">local_dining</i><span class="icon-text">App</span></a><br>').appendTo($sideBar);
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
-    $('<a href="profile.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
+    $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
     //var $bottom = $('<div></div>').addClass('div-wrapper').appendTo($sideBar);
     $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
     return $sideBar;
 }
 
+function signOut() {
+    let userId = "";
+    authg.onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("Display Name = " + firebase.auth().currentUser.email);
+            firebase.auth().signOut();
+        }
+        else {
+            console.log("No one logged in");
+        }
+    });
+}
+
 $(function() {
     const $root = $('#root');
     const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(createHome(), createForm(), footer());
+    $page.append(logInHead(), createHome(), createForm(), footer());
     $root.append(sideBar(), $page);
+
+    $('#header').append(`<p id="greeting">Please sign in</p>`);
+    authg.onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("Display Name = " + firebase.auth().currentUser.email);
+            $('#greeting').text(`Hello, ${firebase.auth().currentUser.email}`);
+        }
+        else {
+            console.log("No one logged in");
+            $('#greeting').text(`Hello, Not signed in`);
+        }
+    });
+
+    $('#logout').on('click', function(event) {
+        event.preventDefault();
+        signOut();
+    });
 
 
     $('#sidebar').on('mouseover', function(event) {

@@ -1,5 +1,5 @@
 export const logInHead = function() {
-    var $container = $('<div></div>').addClass('account-head'); 
+    var $container = $('<div id="header"></div>').addClass('account-head'); 
     var $logIn = $('<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 2px;">Log In</a>');
     var $logOut = $('<button id="logout">Log Out</button>').addClass('out-btn'); 
 
@@ -67,7 +67,7 @@ export const sideBar = function() {
     $('<a href="index.html"><span><i class="material-icons">home</i><span class="icon-text">Home</span></a><br>').appendTo($sideBar);
     $('<a href="app.html"><span><i class="material-icons">local_dining</i><span class="icon-text">App</span></a><br>').appendTo($sideBar);
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
-    $('<a href="profile.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
+    $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
     //var $bottom = $('<div></div>').addClass('div-wrapper').appendTo($sideBar);
     $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
@@ -90,7 +90,7 @@ function signOut() {
 // $(function() {
 $(document).ready(() => {
     $('#root').append(`<div id="header"></div>`);
-    $('#header').append(`<p id="greeting" style="text-align:right">Please sign in</p>`);
+    $('#header').append(`<p id="greeting">Please sign in</p>`);
     authg.onAuthStateChanged(function (user) {
         if (user) {
             console.log("Display Name = " + firebase.auth().currentUser.email);

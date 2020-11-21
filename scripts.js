@@ -86,10 +86,10 @@ $(document).ready(() => {
                     console.log(doc);
 
                     let recipe_object = {
-                        name: name,
-                        calories: calories,
-                        url: theUrl,
-                        image: imageLink
+                        name: recipeDat[0],
+                        // calories: calories,
+                        url: recipeDat[1],
+                        image: recipeDat[2]
                     }
                     usersRef.update({
                         recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
@@ -274,6 +274,8 @@ export function nextRecipe() {
 
 }
 
+ let recipeDat = {recipename: {name: "", url: "", image: ""}}; 
+
 export function getRecipe() {
     let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
         
@@ -287,6 +289,7 @@ export function getRecipe() {
                     //$('#recipe_list').append(`<li>No results</li>`);
                 }
                 else {
+                    //let recipeDat = [3];
                     let randomNum = randomNumber(allRecipes.length);
                     let recipe = allRecipes[randomNum];
                     console.log(recipe);
@@ -295,6 +298,19 @@ export function getRecipe() {
                     let name = generalInfo["label"];
                     let theUrl = generalInfo["url"];
                     let imageLink = generalInfo["image"];
+
+                    recipeDat.recipename["name"] = name;
+                    recipeDat.recipename["url"] = theUrl;
+                    recipeDat.recipename["image"] = imageLink;
+ 
+                    // recipeDat[0] 
+                    // recipeDat[recipename] = name;
+                    // recipeDat[url] = theUrl;
+                    // recipeDat[image] = imageLink;
+                    
+                    // recipeDat[0] = {name: name};
+                    // recipeDat[1] = {url: theUrl};
+                    // recipeDat[2] = {image: imageLink}; 
                     console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
                     let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
                     padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
@@ -316,6 +332,7 @@ export function getRecipe() {
                     // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                     // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
                     // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+
                   
                 }
             },
@@ -408,6 +425,8 @@ export const body = function () {
     $filterSec.append($mealFilter, $healthFilter, $button);
     $body.append($filterSec, $info);
     getRecipe();
+    console.log(recipeDat);
+    console.log(recipeDat.recipename.name);
    
     return $body;
 }
@@ -425,7 +444,7 @@ export const sideBar = function () {
     $('<a href="index.html"><span><i class="material-icons">home</i><span class="icon-text">Home</span></a><br>').appendTo($sideBar);
     $('<a href="app.html"><span><i class="material-icons">local_dining</i><span class="icon-text">App</span></a><br>').appendTo($sideBar);
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
-    $('<a href="profile.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
+    $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
     $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
     return $sideBar;
