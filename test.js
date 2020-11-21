@@ -1,3 +1,5 @@
+import {signUp, signIn, signOut, deleteUser} from './profile.js';
+
 const sideBar = function() {
     var $sideBar = $('<div id="sidebar"></div>').addClass('sidebar');
     $('<a href="index.html"><span><i class="material-icons">home</i><span class="icon-text">Home</span></a><br>').appendTo($sideBar);
@@ -22,8 +24,8 @@ const signInPage = function() {
     var $loginFormInput = $('<div class="input-field"></div>');
     var $email = $('<input type="email" placeholder="email" id="emailLogin" required="email" />');
     var $pass = $('<input type="password" placeholder="password" id="passwordLogin" required/>');
-    var $loginBtn = $('<input type="submit" value="Login" id="signIn" class="button" onClick="signIn()"/>');
-    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" class="button" onClick="deleteUser()"/>');
+    var $loginBtn = $('<input type="submit" value="Login" id="signIn" class="button" />');
+    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" class="button" />');
     $loginFormInput.append($email, $pass, $loginBtn, $deleteBtn);
     $loginForm.append($loginTitle, $loginFormInput);
 
@@ -34,7 +36,7 @@ const signInPage = function() {
     var $signupPass = $('<input type="password" placeholder="password" id="password" required/>')
     var $first = $('<input type="text" placeholder="first name" id="firstName"/>');
     var $last = $('<input type="text" placeholder="last name" id="lastName"/>');
-    var $signupBtn = $('<input type="submit" value="Sign up" id="signUpbtn" class="button" onClick="signUp()"/>');
+    var $signupBtn = $('<input type="submit" value="Sign up" id="signUpbtn" class="button" />');
     $signupFormInput.append($signupEmail, $signupPass, $first, $last, $signupBtn); 
     $signupForm.append($signupTitle, $signupFormInput); 
 
@@ -91,6 +93,21 @@ $(document).ready(() => {
         $('.forms > form').hide();
         $(href).fadeIn(500);
       });
+
+    $('#signIn').on('click', function(event) {
+        event.preventDefault();
+        signIn(); 
+    });
+
+    $('#deleteUser').on('click', function(event) {
+        event.preventDefault();
+        deleteUser();
+    });
+
+    $('#signUpbtn').on('click', function(event) {
+        event.preventDefault();
+        signUp();
+    });
 
 
     $('#sidebar').on('mouseover', function(event) {
