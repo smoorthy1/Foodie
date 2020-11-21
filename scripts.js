@@ -240,7 +240,8 @@ export function nextRecipe() {
 
 }
 
- let recipeDat = {recipename: {name: "", url: "", image: ""}}; 
+ let recipeDat = {}
+ let recipe_name = "howdy";
 
 export function getRecipe() {
     let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
@@ -265,9 +266,12 @@ export function getRecipe() {
                     let theUrl = generalInfo["url"];
                     let imageLink = generalInfo["image"];
 
-                    recipeDat.recipename["name"] = name;
-                    recipeDat.recipename["url"] = theUrl;
-                    recipeDat.recipename["image"] = imageLink;
+                    recipeDat['name'] = name;
+                    recipeDat['url'] = theUrl;
+                    recipeDat['image'] = imageLink;
+
+                    recipe_name = name;
+
  
                     // recipeDat[0] 
                     // recipeDat[recipename] = name;
@@ -391,8 +395,11 @@ export const body = function () {
     $filterSec.append($mealFilter, $healthFilter, $button);
     $body.append($filterSec, $info);
     getRecipe();
+    console.log("incoming is recipeDat");
     console.log(recipeDat);
-    console.log(recipeDat.recipename.name);
+    console.log(recipeDat['image']);
+    console.log("Recipe name = " + recipe_name);
+    // console.log(recipeDat.recipename);
    
     return $body;
 }
