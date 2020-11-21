@@ -187,6 +187,42 @@ $(document).ready(() => {
                     // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                     // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
                     // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+                    $(document).on('click', '#thumbsUpBtn', function(event) {
+                        console.log('thumbs up');
+                        event.preventDefault();
+                        console.log('likeButton clicked');
+                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+                        // window.authUID = firebase.auth().currentUser.uid;
+                        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                        usersRef.get().then((docSnapshot) => {
+                            if (docSnapshot.exists) {
+                                usersRef.onSnapshot((doc) => {
+                                    console.log(doc);
+                
+                                    let recipe_object = {
+                                        name: name,
+                                        // calories: calories,
+                                        url: theUrl,
+                                        image: imageLink
+                                    }
+                                    usersRef.update({
+                                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                    })
+                
+                                    console.log("ID already exists in database");
+                                });
+                            }
+                            else {
+                                usersRef.set({
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    email: email,
+                                    password: password
+                                })
+                            }
+                            nextRecipe();
+                        })
+                    });
                   
                 }
             },
@@ -264,6 +300,42 @@ export function nextRecipe() {
                 // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                 // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
                 // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+                $(document).on('click', '#thumbsUpBtn', function(event) {
+                    console.log('thumbs up');
+                    event.preventDefault();
+                    console.log('likeButton clicked');
+                    console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+                    // window.authUID = firebase.auth().currentUser.uid;
+                    let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                    usersRef.get().then((docSnapshot) => {
+                        if (docSnapshot.exists) {
+                            usersRef.onSnapshot((doc) => {
+                                console.log(doc);
+            
+                                let recipe_object = {
+                                    name: name,
+                                    // calories: calories,
+                                    url: theUrl,
+                                    image: imageLink
+                                }
+                                usersRef.update({
+                                    recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                })
+            
+                                console.log("ID already exists in database");
+                            });
+                        }
+                        else {
+                            usersRef.set({
+                                first_name: firstName,
+                                last_name: lastName,
+                                email: email,
+                                password: password
+                            })
+                        }
+                        nextRecipe();
+                    })
+                });
               
             }
         },
@@ -274,7 +346,7 @@ export function nextRecipe() {
 
 }
 
- let recipeDat = {recipename: {name: "", url: "", image: ""}}; 
+//  let recipeDat = {recipename: {name: "", url: "", image: ""}}; 
 
 export function getRecipe() {
     let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
@@ -299,9 +371,9 @@ export function getRecipe() {
                     let theUrl = generalInfo["url"];
                     let imageLink = generalInfo["image"];
 
-                    recipeDat.recipename["name"] = name;
-                    recipeDat.recipename["url"] = theUrl;
-                    recipeDat.recipename["image"] = imageLink;
+                    // recipeDat.recipename["name"] = name;
+                    // recipeDat.recipename["url"] = theUrl;
+                    // recipeDat.recipename["image"] = imageLink;
  
                     // recipeDat[0] 
                     // recipeDat[recipename] = name;
@@ -332,6 +404,42 @@ export function getRecipe() {
                     // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
                     // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
                     // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+                    $(document).on('click', '#thumbsUpBtn', function(event) {
+                        console.log('thumbs up');
+                        event.preventDefault();
+                        console.log('likeButton clicked');
+                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
+                        // window.authUID = firebase.auth().currentUser.uid;
+                        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                        usersRef.get().then((docSnapshot) => {
+                            if (docSnapshot.exists) {
+                                usersRef.onSnapshot((doc) => {
+                                    console.log(doc);
+                
+                                    let recipe_object = {
+                                        name: name,
+                                        // calories: calories,
+                                        url: theUrl,
+                                        image: imageLink
+                                    }
+                                    usersRef.update({
+                                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                    })
+                
+                                    console.log("ID already exists in database");
+                                });
+                            }
+                            else {
+                                usersRef.set({
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    email: email,
+                                    password: password
+                                })
+                            }
+                            nextRecipe();
+                        })
+                    });
 
                   
                 }
@@ -425,8 +533,8 @@ export const body = function () {
     $filterSec.append($mealFilter, $healthFilter, $button);
     $body.append($filterSec, $info);
     getRecipe();
-    console.log(recipeDat);
-    console.log(recipeDat.recipename.name);
+    // console.log(recipeDat);
+    // console.log(recipeDat.recipename.name);
    
     return $body;
 }
