@@ -108,11 +108,16 @@ $(document).on('click', '#deleteRecipe', function(event) {
     // however, if you query using a search, the results won't be the same index as the backend so... think of a solution
     usersRef.get().then(function(doc) {
         console.log("checkpoint");
-        // console.log("Document data = " + doc.data().first_name);
         console.log(doc.data());
         if (doc.exists) {
             console.log(doc.data().first_name);
-
+            console.log("This is the recipe for this id:");
+            console.log(doc.data().recipe[id_number]);
+            let recipeToDelete = doc.data().recipe[id_number];
+            usersRef.update({
+                recipe: firebase.firestore.FieldValue.arrayRemove(recipeToDelete)
+            })
+            $(`#${id}`).remove();
         } else {
             // doc.data() will be undefined in this case
             console.log("Inbox is empty!");
