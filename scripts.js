@@ -37,42 +37,6 @@ $(document).ready(() => {
         document.getElementById('page').style.marginLeft = '85px';
     });
 
-    // $('#thumbsUpBtn').click(function (event) {
-    //     event.preventDefault();
-    //     console.log('likeButton clicked');
-    //     console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
-    //     // window.authUID = firebase.auth().currentUser.uid;
-    //     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-    //     usersRef.get().then((docSnapshot) => {
-    //         if (docSnapshot.exists) {
-    //             usersRef.onSnapshot((doc) => {
-    //                 console.log(doc);
-
-    //                 let recipe_object = {
-    //                     name: name,
-    //                     calories: calories,
-    //                     url: theUrl,
-    //                     image: imageLink
-    //                 }
-    //                 usersRef.update({
-    //                     recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
-    //                 })
-
-    //                 console.log("ID already exists in database");
-    //             });
-    //         }
-    //         else {
-    //             usersRef.set({
-    //                 first_name: firstName,
-    //                 last_name: lastName,
-    //                 email: email,
-    //                 password: password
-    //             })
-    //         }
-    //         nextRecipe();
-    //     })
-    // });
-
     $(document).on('click', '#thumbsUpBtn', function(event) {
         console.log('thumbs up');
         event.preventDefault();
@@ -83,7 +47,9 @@ $(document).ready(() => {
         usersRef.get().then((docSnapshot) => {
             if (docSnapshot.exists) {
                 usersRef.onSnapshot((doc) => {
+                    console.log("Here is the doc ");
                     console.log(doc);
+                    console.log("End of doc");
 
                     let recipe_object = {
                         name: name,

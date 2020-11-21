@@ -24,24 +24,30 @@ export const body = function(id) {
     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
 
     usersRef.get().then(function(doc) {
+        console.log("checkpoint");
+        // console.log("Document data = " + doc.data().first_name);
+        console.log(doc.data());
         if (doc.exists) {
             console.log(doc.data().first_name);
             var $head = $(`<h1>Hello, ${doc.data().first_name}<h1>`);
             $body.append($head);
             console.log("Document data:", doc.data().recipe);
             let recipe_list = doc.data().recipe;
+            let recipeCounter = 0;
             recipe_list.forEach(recipe => {
                 let name = recipe.name;
                 let calories = recipe.calories;
                 let image = recipe.image;
                 let url = recipe.url;
-                let recipe_card = `<div class="recipe_card">
+                let recipe_card = `<div class="recipe_card" id="recipeCard_${recipeCounter}">
                                         <p>Recipe name: ${name}</p>
                                         <p>Recipe name: ${calories}</p>
                                         <p>Recipe name: ${image}</p>
                                         <p>Recipe name: ${url}</p>
+                                        <button id="deleteRecipe">Delete</button>
                                     </div>`
                 $body.append(recipe_card);
+                recipeCounter++;
             })
         } else {
             // doc.data() will be undefined in this case
@@ -51,6 +57,7 @@ export const body = function(id) {
     }).catch(function(error) {
         console.log("Error getting document:", error);
     });
+    console.log("checkpoint 2");
 
     return $body; 
 }
@@ -86,6 +93,37 @@ function signOut() {
         }
     });
 }
+
+
+$(document).on('click', '#deleteRecipe', function(event) {
+    console.log("Clicked on Delete Recipe");
+    let id = $(this).parent().attr('id');
+    let id_number = id.split("_")[1];
+    console.log("id number = " + id_number);
+    let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+    console.log(usersRef);
+
+    // ENDED WORK HERE: YOU NEED TO FIGURE OUT HOW TO DELETE RECIPE FROM USER'S BACKEND GIVEN THE ID NUMBER
+    // the idea is to use the ID number here, which cooresponds to the backend data, to delete the right element
+    // however, if you query using a search, the results won't be the same index as the backend so... think of a solution
+    usersRef.get().then(function(doc) {
+        console.log("checkpoint");
+        // console.log("Document data = " + doc.data().first_name);
+        console.log(doc.data());
+        if (doc.exists) {
+            console.log(doc.data().first_name);
+
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("Inbox is empty!");
+            alert("Your inbox is empty!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+    event.preventDefault();
+})
 
 // $(function() {
 $(document).ready(() => {
