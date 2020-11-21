@@ -56,7 +56,7 @@ $(document).ready(() => {
 
     authg.onAuthStateChanged(function(user) {
         if (firebase.auth().currentUser) {
-            let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+            // let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
             console.log("checkpoint 1");
             console.log(firebase.auth().currentUser.email);
             //document.getElementById("greeting").innerHTML = `Hello, ${firebase.auth().currentUser.email}`;

@@ -16,11 +16,38 @@ window.authg = firebase.auth();
 const auth = firebase.auth();
 
 export function signUp() {
-    var email = document.getElementById("email");
-    var password = document.getElementById("password");
-    const promise = auth.createUserWithEmailAndPassword(email.value, password.value);
+    console.log("is signup proced?");
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    const promise = auth.createUserWithEmailAndPassword(email, password);
+        
+    let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+
+    promise.then((value) => {
+        console.log(value.user.uid);
+        window.uid = value.user.uid;
+        let usersRef = db.collection('users').doc(value.user.uid);
+        usersRef.get().then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                usersRef.onSnapshot((doc) => {
+                    console.log("ID already exists in database");
+                });
+            }
+            else {
+                console.log("adding user to database");
+                usersRef.set({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    password: password
+                })
+            }
+        })
+        signIn();
+    })
     promise.catch(e => alert(e.message));
-    promise.then(signIn());
+    // promise.then(signIn());
     console.log("Signed in");
 }
 
@@ -28,18 +55,22 @@ export function signIn(){
     var email = null;
     var password = null;
 
-    if(document.getElementById("email").value != null && document.getElementById("password").value != null) {
+    if(document.getElementById("email").value && document.getElementById("password").value) {
+        console.log("Signing in email");
         email = document.getElementById("email").value;
         password = document.getElementById("password").value;
     } else {
+        console.log("Logging in email");
         email = document.getElementById("emailLogin").value;
         password = document.getElementById("passwordLogin").value;
     }
     
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
+    //let firstName = document.getElementById("firstName").value;
+    //let lastName = document.getElementById("lastName").value;
+    console.log("Email = " + email + "  Password = " + password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
+    /*
     promise.then((value) => {
         console.log(value.user.uid);
         window.uid = value.user.uid;
@@ -61,8 +92,14 @@ export function signIn(){
         })
         window.location.href = "app.html"; 
     })
+    */
+    promise.then((value) => {
+        console.log("Got to signin then promise");
+        window.location.href = "app.html"; 
+    })
     promise.catch(e => alert(e.message)); 
-    alert("Signed In");
+    // promise.then(window.location.href = "app.html"); 
+    // alert("Signed In");
 }
 
 export function signOut(){ 
