@@ -189,8 +189,8 @@ function signOut() {
 
 $(document).on('click', '#deleteRecipe', function(event) {
     console.log("Clicked on Delete Recipe");
-    let id = $(this).parent().attr('id');
-    console.log(id);
+    let id = $(this).parent().parent().parent().attr('id');
+    console.log("id = " + id);
     let id_number = id.split("_")[1];
     console.log("id number = " + id_number);
     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);

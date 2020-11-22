@@ -74,7 +74,6 @@ export const createForm = function(id) {
             console.log("current first name = " + document.getElementById('fname').value);
             let new_first_name = document.getElementById('fname').value;
             let new_last_name = document.getElementById('lname').value;
-            // let new_email = document.getElementById('email').value;
             let new_password = document.getElementById('pass').value;
             if(new_first_name == '') {
                 new_first_name = doc.data().first_name;
@@ -82,19 +81,15 @@ export const createForm = function(id) {
             if(new_last_name == '') {
                 new_last_name = doc.data().last_name;
             }
-            /*
-            if(new_email == '') {
-                new_email = doc.data().email;
-            }
-            */
             if(new_password == '') {
                 new_password = doc.data().password;
             }
             usersRef.update({
                 first_name: new_first_name,
                 last_name: new_last_name,
-                //email: new_email,
                 password: new_password
+            }).then(() => {
+                window.location.reload()
             })
             if (document.getElementById('pass').value !== '') {
                 firebase.auth().currentUser.updatePassword(new_password).then(() => {
@@ -103,12 +98,6 @@ export const createForm = function(id) {
                     console.log(error);
                 });
             }
-            // setTimeout(function() {
-            //     window.location.reload();
-            // },10);
-            
-            // FIGURE OUT A WAY TO RELOAD PAGE AFTER UPDATING INFO 
-           
         })
     }).catch(function(error) {
         console.log("Error getting document:", error);
