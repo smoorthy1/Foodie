@@ -34,6 +34,7 @@ export const body = function(id) {
             $body.append($head);
             $body.append(`<form>
                             <input type="search" id="text-search" placeholder="Search your recipes here" />
+                            <button type="button" id="executeSearch">Submit</button>
                           </form>`);
             console.log("Document data:", doc.data().recipe);
             let recipe_list = doc.data().recipe;
@@ -67,6 +68,35 @@ export const body = function(id) {
             $body.append(`<p id="output"></p>`);
             $body.append(`<ul id="matches"></ul>`);
 
+            $(document).on('click', '#executeSearch', function(event) {
+                console.log("Clicked search");
+                $("div.polaroid").remove();
+                let searchTerms = document.getElementById('text-search').value;
+                console.log("search terms = " + searchTerms);
+                let searchTermLength = searchTerms.length;
+                let recipe_counter = 0;
+                recipe_list.forEach(recipe => {
+                    if (recipe.name.substring(0, searchTermLength).toUpperCase() == searchTerms.toUpperCase()) {
+                        let filtered_name = recipe.name;
+                        allRecipeNames.push(name);
+                        let filtered_image = recipe.image;
+                        let filtered_url = recipe.url;
+                        let recipe_card = `<div class="polaroid" id="recipeCard_${recipe_counter}">
+                                                <img src=${filtered_image} alt="recipeImg" style="width:75%; display: block; margin-left: auto; margin-right: auto; padding:18px;">
+                                                <div class="polaroid-container">
+                                                    <p>${filtered_name}</p>
+                                                    <a href="${filtered_url}" target="_blank" style="font-size: 15px;">Recipe Link</a>
+                                                    <div>
+                                                        <button id="deleteRecipe"><i class="material-icons">delete</i></button>
+                                                    </div>
+                                                </div>
+                                            </div>`
+                        $body.append(recipe_card);
+                    }
+                    recipe_counter++;
+                })
+            });
+            /*
             const KEY = 'debounce-terms';
             let init = function() {
                 $(`#text-search`).on('input', efficientSearch);
@@ -139,7 +169,7 @@ export const body = function(id) {
             $('#inboxBody').on('custom', init);
             // document.addEventListener('DOMContentLoaded', init);
             // $(document).ready(init);
-            
+            */
 
         } else {
             // doc.data() will be undefined in this case
@@ -265,7 +295,6 @@ $(document).ready(() => {
                 document.getElementById('sidebar').style.width = '85px';
                 document.getElementById('page').style.marginLeft = '85px'; 
             });  
-
         }
         else {
             alert("No Active User");
