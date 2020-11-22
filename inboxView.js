@@ -67,7 +67,15 @@ export const body = function(id) {
             console.log(allRecipeNames);
             $body.append(`<p id="output"></p>`);
             $body.append(`<ul id="matches"></ul>`);
-
+            
+            $('#text-search').autocomplete({
+                source: allRecipeNames
+            }, {
+                autoFocus: false,
+                delay: 300,
+                minLength: 1
+            });
+            
             $(document).on('click', '#executeSearch', function(event) {
                 console.log("Clicked search");
                 $("div.polaroid").remove();
