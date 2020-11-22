@@ -34,8 +34,8 @@ export const body = function(id) {
             $body.append($head);
             $body.append(`<form>
                             <input type="search" id="text-search" placeholder="Search your recipes here" />
-                            <button type="button" id="executeSearch">Submit</button>
                           </form>`);
+                        //   <button type="button" id="executeSearch">Submit</button>
             console.log("Document data:", doc.data().recipe);
             let recipe_list = doc.data().recipe;
             let recipeCounter = 0;
@@ -68,53 +68,128 @@ export const body = function(id) {
             $body.append(`<p id="output"></p>`);
             $body.append(`<ul id="matches"></ul>`);
             
-            $('#text-search').autocomplete({
-                source: allRecipeNames
-            }, {
-                autoFocus: false,
-                delay: 300,
-                minLength: 1
-            });
+            // $('#text-search').autocomplete({
+            //     source: allRecipeNames
+            // }, {
+            //     autoFocus: false,
+            //     delay: 300,
+            //     minLength: 1
+            // });
             
-            $(document).on('click', '#executeSearch', function(event) {
-                console.log("Clicked search");
-                $("div.polaroid").remove();
-                let searchTerms = document.getElementById('text-search').value;
-                console.log("search terms = " + searchTerms);
-                let searchTermLength = searchTerms.length;
-                let recipe_counter = 0;
-                recipe_list.forEach(recipe => {
-                    if (recipe.name.substring(0, searchTermLength).toUpperCase() == searchTerms.toUpperCase()) {
-                        let filtered_name = recipe.name;
-                        allRecipeNames.push(name);
-                        let filtered_image = recipe.image;
-                        let filtered_url = recipe.url;
-                        let recipe_card = `<div class="polaroid" id="recipeCard_${recipe_counter}">
-                                                <img src=${filtered_image} alt="recipeImg" style="width:75%; display: block; margin-left: auto; margin-right: auto; padding:18px;">
-                                                <div class="polaroid-container">
-                                                    <p>${filtered_name}</p>
-                                                    <a href="${filtered_url}" target="_blank" style="font-size: 15px;">Recipe Link</a>
-                                                    <div>
-                                                        <button id="deleteRecipe"><i class="material-icons">delete</i></button>
-                                                    </div>
-                                                </div>
-                                            </div>`
-                        $body.append(recipe_card);
-                    }
-                    recipe_counter++;
-                })
-            });
-            /*
+            // $(document).on('click', '#executeSearch', function(event) {
+            //     console.log("Clicked search");
+            //     $("div.polaroid").remove();
+            //     let searchTerms = document.getElementById('text-search').value;
+            //     console.log("search terms = " + searchTerms);
+            //     let searchTermLength = searchTerms.length;
+            //     let recipe_counter = 0;
+            //     recipe_list.forEach(recipe => {
+            //         if (recipe.name.substring(0, searchTermLength).toUpperCase() == searchTerms.toUpperCase()) {
+            //             let filtered_name = recipe.name;
+            //             allRecipeNames.push(name);
+            //             let filtered_image = recipe.image;
+            //             let filtered_url = recipe.url;
+            //             let recipe_card = `<div class="polaroid" id="recipeCard_${recipe_counter}">
+            //                                     <img src=${filtered_image} alt="recipeImg" style="width:75%; display: block; margin-left: auto; margin-right: auto; padding:18px;">
+            //                                     <div class="polaroid-container">
+            //                                         <p>${filtered_name}</p>
+            //                                         <a href="${filtered_url}" target="_blank" style="font-size: 15px;">Recipe Link</a>
+            //                                         <div>
+            //                                             <button id="deleteRecipe"><i class="material-icons">delete</i></button>
+            //                                         </div>
+            //                                     </div>
+            //                                 </div>`
+            //             $body.append(recipe_card);
+            //         }
+            //         recipe_counter++;
+            //     })
+            // });
+            
+            // const KEY = 'debounce-terms';
+            // let init = function() {
+            //     $(`#text-search`).on('input', efficientSearch);
+            //     // document.getElementById('text-search').addEventListener('input', efficientSearch);
+            //     // let testArray = ['apple', 'acorn', 'bee', 'beet', 'beef', 'bunny', 'cookie', 
+            //     // 'corn', 'corndog', 'dog', 'dogma', 'echo', 'elephant'];
+            //     let testArray = allRecipeNames; 
+            //     localStorage.setItem(KEY, JSON.stringify(testArray));
+            // }
+
+
+            // let getList = function(text) {
+            //     return new Promise((resolve, reject) => {
+            //         let r = Math.floor(Math.random()*1000);
+            //         setTimeout((function() {
+            //             let t = '^' + this.toString();
+            //             let pattern = new RegExp(t, 'i'); 
+            //             let terms = JSON.parse(localStorage.getItem(KEY));
+            //             let matches = terms.filter(term => pattern.test(term));
+            //             console.log('matches', matches);
+            //             resolve(matches);
+            //         }).bind(text), r);
+            //     })
+            // }
+
+            // let debounce = function(func, wait, immediate) {
+            //     var timeout;
+            //     return function() {
+            //         var context = this, args = arguments;
+            //         var later = function() {
+            //             timeout = null;
+            //             if (!immediate) func.apply(context, args);
+            //         };
+            //         var callNow = immediate && !timeout;
+            //         clearTimeout(timeout);
+            //         timeout = setTimeout(later, wait);
+            //         if (callNow) func.apply(context, args);
+            //     };
+            // };
+
+            // let efficientSearch = debounce(function(e){
+            //     let text = e.target.value;
+            //     // console.log(text);
+            //     // document.getElementById('output').textContent = `List Matching ${text}`;
+            //     $('#output').innerHTML = `List Matching ${text}`;
+            //     // let ul = document.getElementById('matches');
+            //     let ul = $(`#matches`);
+            //     // console.log(ul.attr('id'));
+                
+            //     //call an asynchronous search to match what has been typed
+            //     getList(text)
+            //     .then((list)=>{
+            //         ul.innerHTML = '';
+            //         if( list.length == 0){
+            //             // let li = document.createElement('li');
+            //             let li = $('<li></li>');
+            //             li.innerHTML = "NO MATCHES";
+            //             console.log("appending?");
+            //             ul.append(li);
+            //         }else{
+            //             list.forEach(item=>{
+            //                 // let li = document.createElement('li');
+            //                 let li = $('<li></li>');
+            //                 console.log("correct space");
+            //                 li.innerHTML = item;
+            //                 console.log(li.innerHTML);
+            //                 ul.append(li);
+            //                 // console.log(li.contents());
+            //             })
+            //         }
+            //     })
+            //     .catch(error=>console.warn(error));
+            // }, 300);
+
+            // // $('#inboxBody').on('custom', init);
+            // $(document).keypress(init); 
+            // // document.addEventListener('DOMContentLoaded', init);
+            // // $(document).ready(init);
+
             const KEY = 'debounce-terms';
             let init = function() {
-                $(`#text-search`).on('input', efficientSearch);
-                // document.getElementById('text-search').addEventListener('input', efficientSearch);
-                // let testArray = ['apple', 'acorn', 'bee', 'beet', 'beef', 'bunny', 'cookie', 
-                // 'corn', 'corndog', 'dog', 'dogma', 'echo', 'elephant'];
+                $('#text-search').on('input', efficientSearch);;
                 let testArray = allRecipeNames; 
                 localStorage.setItem(KEY, JSON.stringify(testArray));
             }
-
 
             let getList = function(text) {
                 return new Promise((resolve, reject) => {
@@ -125,7 +200,42 @@ export const body = function(id) {
                         let terms = JSON.parse(localStorage.getItem(KEY));
                         let matches = terms.filter(term => pattern.test(term));
                         console.log('matches', matches);
+                        console.log("Matches length = " + matches.length);
                         resolve(matches);
+
+                        $("div.polaroid").remove();
+
+                        let searchTerms = document.getElementById('text-search').value;
+                        let searchTermLength = searchTerms.length;
+                        let recipe_counter = 0;
+                        recipe_list.forEach(recipe => {
+                            if (recipe.name.substring(0, searchTermLength).toUpperCase() == searchTerms.toUpperCase()) {
+                                let filtered_name = recipe.name;
+                                allRecipeNames.push(name);
+                                let filtered_image = recipe.image;
+                                let filtered_url = recipe.url;
+                                let recipe_card = `<div class="polaroid" id="recipeCard_${recipe_counter}">
+                                                        <img src=${filtered_image} alt="recipeImg" style="width:75%; display: block; margin-left: auto; margin-right: auto; padding:18px;">
+                                                        <div class="polaroid-container">
+                                                            <p>${filtered_name}</p>
+                                                            <a href="${filtered_url}" target="_blank" style="font-size: 15px;">Recipe Link</a>
+                                                            <div>
+                                                                <button id="deleteRecipe"><i class="material-icons">delete</i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>`
+                                $body.append(recipe_card);
+                            }
+                            recipe_counter++;
+                        })
+                        $('#text-search').autocomplete({
+                            source: allRecipeNames,  
+                        }, {
+                            autoFocus: true,
+                            delay: 300,
+                            minLength: 1
+                        });
+
                     }).bind(text), r);
                 })
             }
@@ -148,36 +258,22 @@ export const body = function(id) {
             let efficientSearch = debounce(function(e){
                 let text = e.target.value;
                 // console.log(text);
-                // document.getElementById('output').textContent = `List Matching ${text}`;
-                $('#output').innerHTML = `List Matching ${text}`;
+                // document.getElementById('output').textContent = List Matching ${text};
+                $('#output').innerHTML = 'List Matching ${text}';
                 // let ul = document.getElementById('matches');
-                let ul = $(`#matches`);
+                let ul = $('#matches');
                 
                 //call an asynchronous search to match what has been typed
-                getList(text)
-                .then((list)=>{
-                    ul.innerHTML = '';
-                    if( list.length == 0){
-                        // let li = document.createElement('li');
-                        let li = $('<li></li>');
-                        li.text = "NO MATCHES";
-                        ul.append(li);
-                    }else{
-                        list.forEach(item=>{
-                            // let li = document.createElement('li');
-                            let li = $('<li></li>');
-                            li.text = item;
-                            ul.append(li);
-                        })
-                    }
-                })
-                .catch(error=>console.warn(error));
+                getList(text).catch(error=>console.warn(error));
             }, 300);
 
-            $('#inboxBody').on('custom', init);
-            // document.addEventListener('DOMContentLoaded', init);
-            // $(document).ready(init);
-            */
+            // $('#inboxBody').on('custom', init);
+            // $(document).on('input', init); 
+            $(document).on('keypress', '#text-search', function() {
+                console.log("did you type something?");
+                init();
+            });
+            
 
         } else {
             // doc.data() will be undefined in this case
