@@ -67,15 +67,7 @@ export const body = function(id) {
             console.log(allRecipeNames);
             $body.append(`<p id="output"></p>`);
             $body.append(`<ul id="matches"></ul>`);
-            
-            $('#text-search').autocomplete({
-                source: allRecipeNames
-            }, {
-                autoFocus: false,
-                delay: 300,
-                minLength: 1
-            });
-            
+
             $(document).on('click', '#executeSearch', function(event) {
                 console.log("Clicked search");
                 $("div.polaroid").remove();
@@ -104,17 +96,14 @@ export const body = function(id) {
                     recipe_counter++;
                 })
             });
-            /*
+
+            
             const KEY = 'debounce-terms';
             let init = function() {
-                $(`#text-search`).on('input', efficientSearch);
-                // document.getElementById('text-search').addEventListener('input', efficientSearch);
-                // let testArray = ['apple', 'acorn', 'bee', 'beet', 'beef', 'bunny', 'cookie', 
-                // 'corn', 'corndog', 'dog', 'dogma', 'echo', 'elephant'];
+                $('#text-search').on('input', efficientSearch);
                 let testArray = allRecipeNames; 
                 localStorage.setItem(KEY, JSON.stringify(testArray));
             }
-
 
             let getList = function(text) {
                 return new Promise((resolve, reject) => {
@@ -125,7 +114,50 @@ export const body = function(id) {
                         let terms = JSON.parse(localStorage.getItem(KEY));
                         let matches = terms.filter(term => pattern.test(term));
                         console.log('matches', matches);
+                        console.log("Matches length = " + matches.length);
                         resolve(matches);
+
+                        $("div.polaroid").remove();
+
+                        let searchTerms = document.getElementById('text-search').value;
+                        let searchTermLength = searchTerms.length;
+                        let recipe_counter = 0;
+                        recipe_list.forEach(recipe => {
+                            if (recipe.name.substring(0, searchTermLength).toUpperCase() == searchTerms.toUpperCase()) {
+                                let filtered_name = recipe.name;
+                                allRecipeNames.push(name);
+                                let filtered_image = recipe.image;
+                                let filtered_url = recipe.url;
+                                let recipe_card = `<div class="polaroid" id="recipeCard_${recipe_counter}">
+                                                        <img src=${filtered_image} alt="recipeImg" style="width:75%; display: block; margin-left: auto; margin-right: auto; padding:18px;">
+                                                        <div class="polaroid-container">
+                                                            <p>${filtered_name}</p>
+                                                            <a href="${filtered_url}" target="_blank" style="font-size: 15px;">Recipe Link</a>
+                                                            <div>
+                                                                <button id="deleteRecipe"><i class="material-icons">delete</i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>`
+                                $body.append(recipe_card);
+                            }
+                            recipe_counter++;
+                        })
+                        $('#text-search').autocomplete({
+                            source: allRecipeNames, 
+                            select: function(event, ui) {
+                                var e = jQuery.Event("keydown", { keyCode: 20 });
+                                $("#text-search").trigger(e);
+                                $('text-search').val(ui.item.value);
+                                console.log($('text-search').value);
+                                init();
+                                console.log("ui item = " + ui.item.value);
+                            }
+                        }, {
+                            autoFocus: true,
+                            delay: 300,
+                            minLength: 1
+                        });
+
                     }).bind(text), r);
                 })
             }
@@ -148,36 +180,24 @@ export const body = function(id) {
             let efficientSearch = debounce(function(e){
                 let text = e.target.value;
                 // console.log(text);
-                // document.getElementById('output').textContent = `List Matching ${text}`;
-                $('#output').innerHTML = `List Matching ${text}`;
+                // document.getElementById('output').textContent = List Matching ${text};
+                $('#output').innerHTML = 'List Matching ${text}';
                 // let ul = document.getElementById('matches');
-                let ul = $(`#matches`);
+                let ul = $('#matches');
                 
                 //call an asynchronous search to match what has been typed
-                getList(text)
-                .then((list)=>{
-                    ul.innerHTML = '';
-                    if( list.length == 0){
-                        // let li = document.createElement('li');
-                        let li = $('<li></li>');
-                        li.text = "NO MATCHES";
-                        ul.append(li);
-                    }else{
-                        list.forEach(item=>{
-                            // let li = document.createElement('li');
-                            let li = $('<li></li>');
-                            li.text = item;
-                            ul.append(li);
-                        })
-                    }
-                })
-                .catch(error=>console.warn(error));
+                getList(text).catch(error=>console.warn(error));
             }, 300);
 
-            $('#inboxBody').on('custom', init);
+            // $('#inboxBody').on('custom', init);
+            // $(document).keypress(init); 
+            $(document).on('input', '#text-search', function() {
+                init();
+            });
+
+
             // document.addEventListener('DOMContentLoaded', init);
             // $(document).ready(init);
-            */
 
         } else {
             // doc.data() will be undefined in this case
