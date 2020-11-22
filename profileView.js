@@ -19,16 +19,16 @@ export const createHome = function() {
 */
 
 export const createHome = function() {
-    var $container = $('<div></div>').addClass('header');
+    var $container = $('<div></div>').addClass('header-profile');
     var $photo = $('<img src="food2.jpg" alt="Food">').addClass('ibx-img');
-    var $insideHeader = $('<p>Account Information</p>').addClass('inside-header');
+    var $insideHeader = $('<p>Account Information</p>').addClass('prof-header');
     $container.append($photo, $insideHeader);
     return $container; 
 }
 
 export const createForm = function(id) {
     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-    var $container = $('<div></div>').addClass('container'); 
+    var $container = $('<div></div>').addClass('container-form'); 
     var $form = $('<form></form>'); 
     var $firstSec = $('<div></div>').addClass('row');
     var $lastSec = $('<div></div>').addClass('row');
@@ -38,16 +38,16 @@ export const createForm = function(id) {
     var $profile = $('<img id="profilePic" src="https://i.pinimg.com/564x/5e/fc/87/5efc87ed8b6dae09f05c8f497cc1b738.jpg">');
     var $pic = $('<input type="file" id="upload" name="picUpload" placeholder="Photo" capture>');
     var $title = $('<div></div>');
-    var $flabel = $('<div></div>').addClass('col-25').append($('<label for="fname">First Name</label>'));;
+    var $flabel = $('<div></div>').addClass('col-25').append($('<label style="font-size:20px;" for="fname">First Name</label>'));;
     var $fname = $('<div></div>').addClass('col-75');
-    var $lastlabel = $('<div></div>').addClass('col-25').append($('<label for="lname">Last Name</label>'));
+    var $lastlabel = $('<div></div>').addClass('col-25').append($('<label style="font-size:20px;" for="lname">Last Name</label>'));
     var $lname = $('<div></div>').addClass('col-75');
-    var $emailLabel = $('<div></div>').addClass('col-25').append($('<label for="email">Email</label>'));
+    var $emailLabel = $('<div></div>').addClass('col-25').append($('<label style="font-size:20px;" for="email">Email</label>'));
     var $email = $('<div></div>').addClass('col-75');
-    var $passLabel = $('<div></div>').addClass('col-25').append($('<label for="pass">Password</label>'));
+    var $passLabel = $('<div></div>').addClass('col-25').append($('<label style="font-size:20px;" for="pass">Password</label>'));
     var $pass = $('<div></div>').addClass('col-75');
     var $submit = $('<div></div>');
-    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" class="button" />');
+    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" style="margin-right: 350px;" class="button" />');
 
     usersRef.get().then(function(doc) {
         console.log(doc.data());
@@ -56,17 +56,18 @@ export const createForm = function(id) {
             $title.append($(`<h1>${doc.data().first_name} ${doc.data().last_name}</h1>`).addClass('contact'));
             $fname.append($(`<input type="text" id="fname" name="firstname" placeholder="${doc.data().first_name}">`));
             $lname.append($(`<input type="text" id="lname" name="lastname" placeholder="${doc.data().last_name}">`));
-            $email.append($(`<p>${doc.data().email}</p>`));
+            $email.append($(`<p style="font-family:Ink Free; font-weight: bold; font-size: 20px; margin-left: 225px;">${doc.data().email}</p>`));
             $pass.append($(`<input type="password" id="pass" name="pass" placeholder="${doc.data().password}">`));
-            $submit.append($('<input type="submit" id="updateProfile" value="Submit">'));
+            $submit.append($('<input type="submit" id="updateProfile" style="float:left; margin-left: 575px;" value="Change Info">'));
             $profSec.append($profile);
             $firstSec.append($flabel, $fname);
             $lastSec.append($lastlabel, $lname);
             $emailSec.append($emailLabel, $email);
             $passSec.append($passLabel, $pass);
-            $form.append($profSec, $pic, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit, $deleteBtn); 
+            $form.append($profSec, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit, $deleteBtn); 
             $container.append($form); 
         }
+
         $(document).on('click', '#updateProfile', function(event) {
             console.log("User attempting to be updated");
             event.preventDefault();
@@ -102,10 +103,17 @@ export const createForm = function(id) {
                     console.log(error);
                 });
             }
+            // setTimeout(function() {
+            //     window.location.reload();
+            // },10);
+            
+            // FIGURE OUT A WAY TO RELOAD PAGE AFTER UPDATING INFO 
+           
         })
     }).catch(function(error) {
         console.log("Error getting document:", error);
     });
+
     
     return $container;
 }
