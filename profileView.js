@@ -47,6 +47,7 @@ export const createForm = function(id) {
             $email.append($(`<input type="text" id="email" name="email" placeholder="${doc.data().email}">`));
             $pass.append($(`<input type="password" id="pass" name="pass" placeholder="${doc.data().password}">`));
             $submit.append($('<input type="submit" value="Submit">'));
+            $submit.append($('<input type="submit" value="Delete">'))
             $profSec.append($profile);
             $firstSec.append($flabel, $fname);
             $lastSec.append($lastlabel, $lname);
@@ -54,6 +55,7 @@ export const createForm = function(id) {
             $passSec.append($passLabel, $pass);
             $form.append($profSec, $pic, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit); 
             $container.append($form); 
+            
         }
     }).catch(function(error) {
         console.log("Error getting document:", error);
