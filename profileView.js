@@ -7,13 +7,23 @@ export const logInHead = function() {
     return $container;
 }
 
+/*
 export const createHome = function() {
     var $container = $('<div></div>').addClass('cropped');
     var $photo = $('<img src="food.jpg" alt="Food">').addClass('bg-img');
     var $siteName = $('<div>Foodie</div>').addClass('centered');
-    $container.append($photo);
+    $container.append($photo, $siteName);
     
     return $container;
+}
+*/
+
+export const createHome = function() {
+    var $container = $('<div></div>').addClass('header');
+    var $photo = $('<img src="food2.jpg" alt="Food">').addClass('ibx-img');
+    var $insideHeader = $('<p>Account Information</p>').addClass('inside-header');
+    $container.append($photo, $insideHeader);
+    return $container; 
 }
 
 export const createForm = function(id) {
@@ -39,15 +49,16 @@ export const createForm = function(id) {
     var $submit = $('<div></div>');
     var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" class="button" />');
 
-
     usersRef.get().then(function(doc) {
-        if(doc.exists) {
+        console.log(doc.data());
+        if(doc.data()) {
+            console.log("Did you get into the userRef form???");
             $title.append($(`<h1>${doc.data().first_name} ${doc.data().last_name}</h1>`).addClass('contact'));
             $fname.append($(`<input type="text" id="fname" name="firstname" placeholder="${doc.data().first_name}">`));
             $lname.append($(`<input type="text" id="lname" name="lastname" placeholder="${doc.data().last_name}">`));
-            $email.append($(`<input type="text" id="email" name="email" placeholder="${doc.data().email}">`));
+            $email.append($(`<p>${doc.data().email}</p>`));
             $pass.append($(`<input type="password" id="pass" name="pass" placeholder="${doc.data().password}">`));
-            $submit.append($('<input type="submit" value="Submit">'));
+            $submit.append($('<input type="submit" id="updateProfile" value="Submit">'));
             $profSec.append($profile);
             $firstSec.append($flabel, $fname);
             $lastSec.append($lastlabel, $lname);
@@ -56,10 +67,46 @@ export const createForm = function(id) {
             $form.append($profSec, $pic, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit, $deleteBtn); 
             $container.append($form); 
         }
+        $(document).on('click', '#updateProfile', function(event) {
+            console.log("User attempting to be updated");
+            event.preventDefault();
+            console.log("current first name = " + document.getElementById('fname').value);
+            let new_first_name = document.getElementById('fname').value;
+            let new_last_name = document.getElementById('lname').value;
+            // let new_email = document.getElementById('email').value;
+            let new_password = document.getElementById('pass').value;
+            if(new_first_name == '') {
+                new_first_name = doc.data().first_name;
+            }
+            if(new_last_name == '') {
+                new_last_name = doc.data().last_name;
+            }
+            /*
+            if(new_email == '') {
+                new_email = doc.data().email;
+            }
+            */
+            if(new_password == '') {
+                new_password = doc.data().password;
+            }
+            usersRef.update({
+                first_name: new_first_name,
+                last_name: new_last_name,
+                //email: new_email,
+                password: new_password
+            })
+            if (document.getElementById('pass').value !== '') {
+                firebase.auth().currentUser.updatePassword(new_password).then(() => {
+                    console.log("Password successfully changed");
+                }, (error) => {
+                    console.log(error);
+                });
+            }
+        })
     }).catch(function(error) {
         console.log("Error getting document:", error);
     });
-   
+    
     return $container;
 }
 
@@ -165,10 +212,11 @@ $(function() {
                 console.log($('#upload').val());
             });
 
-            $('#deleteUser').on('click', function(event) {
+            $(document).on('click', '#deleteUser', function(event) {
+                console.log("User deleted");
                 event.preventDefault();
-                deleteUser();
-            });
+                deleteUser();  
+            })
 
         }
         else {
@@ -176,26 +224,4 @@ $(function() {
             window.location.href = 'profile.html'; 
         }
     });
-
-    // $('#logout').on('click', function(event) {
-    //     event.preventDefault();
-    //     signOut();
-    // });
-
-
-    // $('#sidebar').on('mouseover', function(event) {
-    //     event.preventDefault();
-    //     document.getElementById('sidebar').style.width = '250px';
-    //     document.getElementById('page').style.marginLeft = '250px'; 
-    // });
-
-    // $('#sidebar').on('mouseout', function(event) {
-    //     event.preventDefault();
-    //     document.getElementById('sidebar').style.width = '85px';
-    //     document.getElementById('page').style.marginLeft = '85px'; 
-    // });
-
-   
- 
-    
 })
