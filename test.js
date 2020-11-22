@@ -26,7 +26,7 @@ const signInPage = function() {
     var $pass = $('<input type="password" placeholder="password" id="passwordLogin" required/>');
     var $loginBtn = $('<input type="submit" value="Login" id="signIn" class="button" />');
     var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" class="button" />');
-    $loginFormInput.append($email, $pass, $loginBtn, $deleteBtn);
+    $loginFormInput.append($email, $pass, $loginBtn);
     $loginForm.append($loginTitle, $loginFormInput);
 
     var $signupForm = $('<form action="#" id="signup"></form>');
@@ -99,10 +99,10 @@ $(document).ready(() => {
         signIn(); 
     });
 
-    $('#deleteUser').on('click', function(event) {
-        event.preventDefault();
-        deleteUser();
-    });
+    // $('#deleteUser').on('click', function(event) {
+    //     event.preventDefault();
+    //     deleteUser();
+    // });
 
     $('#signUpbtn').on('click', function(event) {
         event.preventDefault();

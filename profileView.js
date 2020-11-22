@@ -26,7 +26,7 @@ export const createForm = function(id) {
     var $passSec = $('<div></div>').addClass('row');
     var $profSec = $('<div></div>').addClass('profile-container');
     var $profile = $('<img id="profilePic" src="https://i.pinimg.com/564x/5e/fc/87/5efc87ed8b6dae09f05c8f497cc1b738.jpg">');
-    var $pic = $('<input type="file" id="upload" name="picUpload" placeholder="Photo" required="" capture>');
+    var $pic = $('<input type="file" id="upload" name="picUpload" placeholder="Photo" capture>');
     var $title = $('<div></div>');
     var $flabel = $('<div></div>').addClass('col-25').append($('<label for="fname">First Name</label>'));;
     var $fname = $('<div></div>').addClass('col-75');
@@ -37,6 +37,7 @@ export const createForm = function(id) {
     var $passLabel = $('<div></div>').addClass('col-25').append($('<label for="pass">Password</label>'));
     var $pass = $('<div></div>').addClass('col-75');
     var $submit = $('<div></div>');
+    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" class="button" />');
 
 
     usersRef.get().then(function(doc) {
@@ -52,7 +53,7 @@ export const createForm = function(id) {
             $lastSec.append($lastlabel, $lname);
             $emailSec.append($emailLabel, $email);
             $passSec.append($passLabel, $pass);
-            $form.append($profSec, $pic, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit); 
+            $form.append($profSec, $pic, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit, $deleteBtn); 
             $container.append($form); 
         }
     }).catch(function(error) {
@@ -91,6 +92,25 @@ function signOut() {
         else {
             console.log("No one logged in");
         }
+    });
+}
+
+export function deleteUser() {
+    auth.onAuthStateChanged(function(user) {
+        if(user) {
+            var email = user.email;
+            console.log("Current user = " + auth.currentUser.uid);
+            auth.currentUser.delete().then(function() {
+                console.log("User deleted successfully");
+            }).catch(function(error) {
+                console.log(error);
+                console.log("unexpected user deletion error");  
+            });
+        }
+        else {
+            console.log("No Active User");
+        }
+        
     });
 }
 
@@ -143,6 +163,11 @@ $(function() {
             $('#upload').on('change', function(event) {
                 $('#profilePic').attr('src', $('#upload').val());
                 console.log($('#upload').val());
+            });
+
+            $('#deleteUser').on('click', function(event) {
+                event.preventDefault();
+                deleteUser();
             });
 
         }
