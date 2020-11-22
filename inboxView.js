@@ -17,7 +17,10 @@ export const header = function() {
 
 export const body = function(id) {
 
-    var $body = $('<div></div>');
+    var $body = $('<div id="inboxBody"></div>');
+    
+    
+
     //var $head = $(`<h1>Hello, ${id}<h1>`);
     //$body.append($head);
 
@@ -41,59 +44,46 @@ export const body = function(id) {
                 let calories = recipe.calories;
                 let image = recipe.image;
                 let url = recipe.url;
-                let recipe_card = `<div class="recipe_card" id="recipeCard_${recipeCounter}">
-                                        <p>Recipe name: ${name}</p>
-                                        <p>Calories: ${calories}</p>
-                                        <p>Image URL: ${image}</p>
-                                        <p>Recipe URL: ${url}</p>
-                                        <button id="deleteRecipe">Delete</button>
+               
+                let recipe_card = `<div class="polaroid" id="recipeCard_${recipeCounter}">
+                                        <img src=${image} alt="recipeImg" style="width:75%; display: block; margin-left: auto; margin-right: auto; padding:18px;">
+                                        <div class="polaroid-container">
+                                            <p>${name}</p>
+                                            <a href="${url}" target="_blank" style="font-size: 15px;">Recipe Link</a>
+                                            <div>
+                                                <button id="deleteRecipe"><i class="material-icons">delete</i></button>
+                                            </div>
+                                        </div>
                                     </div>`
                 $body.append(recipe_card);
                 recipeCounter++;
             })
 
             // code that deals with setting up searches
-            /*
+            // $grid.append($gridCol);
+            // $body.append($grid);
             console.log("All recipe names = ");
             console.log(allRecipeNames);
+            $body.append(`<p id="output"></p>`);
             $body.append(`<ul id="matches"></ul>`);
 
             const KEY = 'debounce-terms';
             let init = function() {
-                $(`#text-search`).addEventListener('input', efficientSearch);
-                let testArray = ['apple', 'acorn', 'bee', 'beet', 'beef', 'bunny', 'cookie', 
-                'corn', 'corndog', 'dog', 'dogma', 'echo', 'elephant'];
+                $(`#text-search`).on('input', efficientSearch);
+                // document.getElementById('text-search').addEventListener('input', efficientSearch);
+                // let testArray = ['apple', 'acorn', 'bee', 'beet', 'beef', 'bunny', 'cookie', 
+                // 'corn', 'corndog', 'dog', 'dogma', 'echo', 'elephant'];
+                let testArray = allRecipeNames; 
                 localStorage.setItem(KEY, JSON.stringify(testArray));
             }
 
-            let search = function(ev) {
-                let text = ev.target.value;
-                $(`#output`).textContent = `List Matching ${text}`;
-                let ul = $(`#matches`);
-
-                getList(text).then((list) => {
-                    ul.innerHTML = '';
-                    if (list.length === 0) {
-                        let li = document.createElement('li');
-                        li.textContent = "No matches";
-                        ul.appendChild(li);
-                    }
-                    else {
-                        list.forEach(item => {
-                            let li = document.createElement('li');
-                            li.textContent = item;
-                            ul.appendChild(li);
-                        })
-                    }
-                }).catch(error => console.warn(error))
-            }
 
             let getList = function(text) {
                 return new Promise((resolve, reject) => {
                     let r = Math.floor(Math.random()*1000);
                     setTimeout((function() {
                         let t = '^' + this.toString();
-                        let pattern = new RegExp(t, 'i'); //starts with t
+                        let pattern = new RegExp(t, 'i'); 
                         let terms = JSON.parse(localStorage.getItem(KEY));
                         let matches = terms.filter(term => pattern.test(term));
                         console.log('matches', matches);
@@ -117,32 +107,39 @@ export const body = function(id) {
                 };
             };
 
-            let efficientSearch = debounce(function(ev){
-                let text = ev.target.value;
-                document.getElementById('output').textContent = `List Matching ${text}`;
-                let ul = document.getElementById('matches');
+            let efficientSearch = debounce(function(e){
+                let text = e.target.value;
+                // console.log(text);
+                // document.getElementById('output').textContent = `List Matching ${text}`;
+                $('#output').innerHTML = `List Matching ${text}`;
+                // let ul = document.getElementById('matches');
+                let ul = $(`#matches`);
                 
                 //call an asynchronous search to match what has been typed
                 getList(text)
                 .then((list)=>{
                     ul.innerHTML = '';
                     if( list.length == 0){
-                        let li = document.createElement('li');
-                        li.textContent = "NO MATCHES";
-                        ul.appendChild(li);
+                        // let li = document.createElement('li');
+                        let li = $('<li></li>');
+                        li.text = "NO MATCHES";
+                        ul.append(li);
                     }else{
                         list.forEach(item=>{
-                            let li = document.createElement('li');
-                            li.textContent = item;
-                            ul.appendChild(li);
+                            // let li = document.createElement('li');
+                            let li = $('<li></li>');
+                            li.text = item;
+                            ul.append(li);
                         })
                     }
                 })
-                .catch(err=>console.warn(err));
+                .catch(error=>console.warn(error));
             }, 300);
 
-            document.addEventListener('DOMContentLoaded', init);
-            */
+            $('#inboxBody').on('custom', init);
+            // document.addEventListener('DOMContentLoaded', init);
+            // $(document).ready(init);
+            
 
         } else {
             // doc.data() will be undefined in this case
@@ -193,6 +190,7 @@ function signOut() {
 $(document).on('click', '#deleteRecipe', function(event) {
     console.log("Clicked on Delete Recipe");
     let id = $(this).parent().attr('id');
+    console.log(id);
     let id_number = id.split("_")[1];
     console.log("id number = " + id_number);
     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
@@ -266,7 +264,7 @@ $(document).ready(() => {
                 event.preventDefault();
                 document.getElementById('sidebar').style.width = '85px';
                 document.getElementById('page').style.marginLeft = '85px'; 
-            });   
+            });  
 
         }
         else {
@@ -279,4 +277,6 @@ $(document).ready(() => {
         alert("empty page");
     }
     // need to redirect users to login page if they haven't signed in yet. Should go down here.
+
+    
 })

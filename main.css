@@ -189,6 +189,7 @@ p {
   .icon-text {
     vertical-align: middle;
     font-family: Ink Free;
+   
   }
 
 .material-icons {
@@ -725,7 +726,51 @@ input[type='checkbox']:checked:after {
   grid-gap: 0px;
 }
 
+.polaroid {
+  width: 50%;
+  max-width: 310px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* float: left; */
+  display: inline-table;
+  margin-right: 40px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  /* width: 25%;
+  padding: 5px; */
+  
+}
 
+.polaroid-container {
+  text-align: center;
+  padding: 10px;
+}
+
+.polaroid p {
+  font-family: Bahnschrift;
+  font-weight: bolder;
+  text-align: center;
+  font-size: 16px;
+
+}
+
+#deleteRecipe {
+  background-color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+ 
+}
+
+#deleteRecipe i {
+  position: relative;
+  left: 30%; 
+}
+
+
+#deleteRecipe:hover {
+  color: #B5A493;
+}
 
 
 
