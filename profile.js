@@ -94,7 +94,7 @@ export function signIn(){
     */
     promise.then((value) => {
         console.log("Got to signin then promise");
-        window.location.href = "app.html"; 
+        window.location.href = "profilepage.html"; 
     })
     promise.catch(e => alert(e.message)); 
     // promise.then(window.location.href = "app.html"); 
