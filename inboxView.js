@@ -24,18 +24,20 @@ export const body = function(id) {
     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
 
     usersRef.get().then(function(doc) {
-        console.log("checkpoint");
-        // console.log("Document data = " + doc.data().first_name);
-        console.log(doc.data());
+        let allRecipeNames = [];
         if (doc.exists) {
             console.log(doc.data().first_name);
             var $head = $(`<h1>Hello, ${doc.data().first_name}<h1>`);
             $body.append($head);
+            $body.append(`<form>
+                            <input type="search" id="text-search" placeholder="Search your recipes here" />
+                          </form>`);
             console.log("Document data:", doc.data().recipe);
             let recipe_list = doc.data().recipe;
             let recipeCounter = 0;
             recipe_list.forEach(recipe => {
                 let name = recipe.name;
+                allRecipeNames.push(name);
                 let calories = recipe.calories;
                 let image = recipe.image;
                 let url = recipe.url;
@@ -49,6 +51,99 @@ export const body = function(id) {
                 $body.append(recipe_card);
                 recipeCounter++;
             })
+
+            // code that deals with setting up searches
+            /*
+            console.log("All recipe names = ");
+            console.log(allRecipeNames);
+            $body.append(`<ul id="matches"></ul>`);
+
+            const KEY = 'debounce-terms';
+            let init = function() {
+                $(`#text-search`).addEventListener('input', efficientSearch);
+                let testArray = ['apple', 'acorn', 'bee', 'beet', 'beef', 'bunny', 'cookie', 
+                'corn', 'corndog', 'dog', 'dogma', 'echo', 'elephant'];
+                localStorage.setItem(KEY, JSON.stringify(testArray));
+            }
+
+            let search = function(ev) {
+                let text = ev.target.value;
+                $(`#output`).textContent = `List Matching ${text}`;
+                let ul = $(`#matches`);
+
+                getList(text).then((list) => {
+                    ul.innerHTML = '';
+                    if (list.length === 0) {
+                        let li = document.createElement('li');
+                        li.textContent = "No matches";
+                        ul.appendChild(li);
+                    }
+                    else {
+                        list.forEach(item => {
+                            let li = document.createElement('li');
+                            li.textContent = item;
+                            ul.appendChild(li);
+                        })
+                    }
+                }).catch(error => console.warn(error))
+            }
+
+            let getList = function(text) {
+                return new Promise((resolve, reject) => {
+                    let r = Math.floor(Math.random()*1000);
+                    setTimeout((function() {
+                        let t = '^' + this.toString();
+                        let pattern = new RegExp(t, 'i'); //starts with t
+                        let terms = JSON.parse(localStorage.getItem(KEY));
+                        let matches = terms.filter(term => pattern.test(term));
+                        console.log('matches', matches);
+                        resolve(matches);
+                    }).bind(text), r);
+                })
+            }
+
+            let debounce = function(func, wait, immediate) {
+                var timeout;
+                return function() {
+                    var context = this, args = arguments;
+                    var later = function() {
+                        timeout = null;
+                        if (!immediate) func.apply(context, args);
+                    };
+                    var callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) func.apply(context, args);
+                };
+            };
+
+            let efficientSearch = debounce(function(ev){
+                let text = ev.target.value;
+                document.getElementById('output').textContent = `List Matching ${text}`;
+                let ul = document.getElementById('matches');
+                
+                //call an asynchronous search to match what has been typed
+                getList(text)
+                .then((list)=>{
+                    ul.innerHTML = '';
+                    if( list.length == 0){
+                        let li = document.createElement('li');
+                        li.textContent = "NO MATCHES";
+                        ul.appendChild(li);
+                    }else{
+                        list.forEach(item=>{
+                            let li = document.createElement('li');
+                            li.textContent = item;
+                            ul.appendChild(li);
+                        })
+                    }
+                })
+                .catch(err=>console.warn(err));
+            }, 300);
+
+            document.addEventListener('DOMContentLoaded', init);
+            */
+
         } else {
             // doc.data() will be undefined in this case
             console.log("Inbox is empty!");

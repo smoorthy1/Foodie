@@ -19,6 +19,7 @@ export function signUp() {
     console.log("is signup proced?");
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
+    console.log("signing up with email = " + email + "  password = " + password);
     const promise = auth.createUserWithEmailAndPassword(email, password);
         
     let firstName = document.getElementById("firstName").value;
@@ -43,8 +44,8 @@ export function signUp() {
                     password: password
                 })
             }
+            signIn();
         })
-        signIn();
     })
     promise.catch(e => alert(e.message));
     // promise.then(signIn());
@@ -64,9 +65,7 @@ export function signIn(){
         email = document.getElementById("emailLogin").value;
         password = document.getElementById("passwordLogin").value;
     }
-    
-    //let firstName = document.getElementById("firstName").value;
-    //let lastName = document.getElementById("lastName").value;
+
     console.log("Email = " + email + "  Password = " + password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
@@ -115,6 +114,7 @@ export function deleteUser() {
             auth.currentUser.delete().then(function() {
                 console.log("User deleted successfully");
             }).catch(function(error) {
+                console.log(error);
                 console.log("unexpected user deletion error");  
             });
         }
