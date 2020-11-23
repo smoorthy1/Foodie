@@ -35,23 +35,24 @@ export const createForm = function(id) {
     var $email = $('<div></div>').addClass('col-75');
     var $passLabel = $('<div></div>').addClass('col-25').append($('<label style="font-size:20px;" for="pass">Password</label>'));
     var $pass = $('<div></div>').addClass('col-75');
-    var $submit = $('<div></div>');
-    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" style="margin-right: 350px;" class="button" />');
-
+    var $submit = $('<div></div>').addClass('row');
+    var $btndiv = $('<div></div>').addClass('col-75');
+    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" style="position:flex;" class="button" />');
     usersRef.get().then(function(doc) {
         if(doc.data()) {
             $title.append($(`<h1>${doc.data().first_name} ${doc.data().last_name}</h1>`).addClass('contact'));
             $fname.append($(`<input type="text" id="fname" name="firstname" placeholder="${doc.data().first_name}">`));
             $lname.append($(`<input type="text" id="lname" name="lastname" placeholder="${doc.data().last_name}">`));
-            $email.append($(`<p style="font-family:Ink Free; font-weight: bold; font-size: 20px; margin-left: 225px;">${doc.data().email}</p>`));
+            $email.append($(`<p style="font-family:Ink Free; font-weight: bold; font-size: 20px; width: 600px; position:flex;">${doc.data().email}</p>`));
             $pass.append($(`<input type="password" id="pass" name="pass" placeholder="${doc.data().password}">`));
-            $submit.append($('<input type="submit" id="updateProfile" style="float:left; margin-left: 575px;" value="Change Info">'));
+            $btndiv.append($('<input type="submit" id="updateProfile" style="position:flex; margin-left:35%; margin-right:2.5%;" value="Change Info">'), $deleteBtn);
+            $submit.append($btndiv);
             $profSec.append($profile);
             $firstSec.append($flabel, $fname);
             $lastSec.append($lastlabel, $lname);
             $emailSec.append($emailLabel, $email);
             $passSec.append($passLabel, $pass);
-            $form.append($profSec, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit, $deleteBtn); 
+            $form.append($profSec, $title, $firstSec, $lastSec, $emailSec, $passSec, $submit); 
             $container.append($form); 
         }
 
@@ -104,7 +105,7 @@ export const sideBar = function() {
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
     $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
-    $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
+    // $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
     return $sideBar;
 }
 
