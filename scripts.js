@@ -1,158 +1,147 @@
 $(document).ready(() => {
-    //need to redirect to signin page 
 
-    // $('#root').append(`<div id="header"></div>`);
-
-    const $page = $('<div id="page"><div>').addClass('main');
-    $page.append(logInHead(), createHome(), body(), footer());
-    $('#root').append(sideBar(), $page);
-
-    $('#header').append(`<p id="greeting" style="text-align:right">Please sign in</p>`);
-    authg.onAuthStateChanged(function (user) {
-        if (user) {
-            console.log("Display Name = " + firebase.auth().currentUser.email);
+    auth.onAuthStateChanged(function(user) {
+        if(user) {
             window.authUID = firebase.auth().currentUser.uid;
-            $('#greeting').text(`Hello, ${firebase.auth().currentUser.email}`);
-        }
-        else {
-            console.log("No one logged in");
-            $('#greeting').text(`Hello, Not signed in`);
-        }
-    });
-
-    $('#logout').on('click', function(event) {
-        event.preventDefault();
-        signOut();
-    });
-
-    $('#sidebar').on('mouseover', function (event) {
-        event.preventDefault();
-        document.getElementById('sidebar').style.width = '250px';
-        document.getElementById('page').style.marginLeft = '250px';
-    });
-
-    $('#sidebar').on('mouseout', function (event) {
-        event.preventDefault();
-        document.getElementById('sidebar').style.width = '85px';
-        document.getElementById('page').style.marginLeft = '85px';
-    });
-
-    $(document).on('click', '#thumbsDownBtn', function(event) {
-        event.preventDefault();
-        console.log("thumbs down");
-        nextRecipe();
-    });
-
-    $('#name_button').on('click', (e) => {
-        let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
-        if (dairy.checked) {
-            query = query + "&health=alcohol-free";
-        }
-        if (gluten.checked) {
-            query = query + "&health=immuno-supportive";
-        }
-        if (vegan.checked) {
-            query = query + "&health=vegan";
-        }
-        if (peanut.checked) {
-            query = query + "&health=peanut-free";
-        }
-        if (snack.checked) {
-            query = query + "&mealtype=snack";
-        }
-        if (breakfast.checked) {
-            query = query + "&mealtype=breakfast";
-        }
-        if (lunch.checked) {
-            query = query + "&mealtype=lunch";
-        }
-        if (dinner.checked) {
-            query = query + "&mealtype=dinner";
-        }
-      
+            const $page = $('<div id="page"><div>').addClass('main');
+            $page.append(logInHead(), createHome(), body(), footer());
+            $('#root').append(sideBar(), $page);
         
-        $.get({
-            url: query,
-            success: (result) => {
-                let allRecipes = result.hits;
-                if (allRecipes.length == 0) {
-                    alert("No results");
+            $('#header').append(`<p id="greeting" style="text-align:right">Please sign in</p>`);
+            authg.onAuthStateChanged(function (user) {
+                if (user) {
+                    window.authUID = firebase.auth().currentUser.uid;
+                    $('#greeting').text(`Hello, ${firebase.auth().currentUser.email}`);
                 }
                 else {
-                    let randomNum = randomNumber(allRecipes.length);
-                    let recipe = allRecipes[randomNum];
-                    console.log(recipe);
-                    let generalInfo = recipe["recipe"];
-                    let calories = generalInfo["calories"];
-                    let name = generalInfo["label"];
-                    let theUrl = generalInfo["url"];
-                    let imageLink = generalInfo["image"];
-                    console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
-                    let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
-                    padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
-                    $('#recipe_div').empty().append($food_img);
-                    let $food_name = $(`<p>${name}<p>`).addClass('food-name');
-                    $('#recipe_div').append($food_name);
-                   
-                    //$('#recipe_div').append(`<p>Calories: ${calories}<p>`);
-                    $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
-                    let $btn_div = $('<div></div>');
-                    let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
-                    let $no_btn = $(`<button type="submit" id="thumbsDownBtn"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
-                    $btn_div.append($no_btn,$yes_btn);
-                    $('#recipe_div').append($btn_div);
-                  
-                    console.log("Current user = " + authg.currentUser.uid);
-                    // $('#recipe_div').empty().append(`<p>Name: ${name}<p>`);
-                    // $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
-                    // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
-                    // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
-                    // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
-                    $(document).on('click', '#thumbsUpBtn', function(event) {
-                        console.log('thumbs up');
-                        event.preventDefault();
-                        console.log('likeButton clicked');
-                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
-                        // window.authUID = firebase.auth().currentUser.uid;
-                        let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-                        usersRef.get().then((docSnapshot) => {
-                            if (docSnapshot.exists) {
-                                usersRef.onSnapshot((doc) => {
-                                    console.log(doc);
-                
-                                    let recipe_object = {
-                                        name: name,
-                                        calories: calories,
-                                        url: theUrl,
-                                        image: imageLink
-                                    }
-                                    usersRef.update({
-                                        recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
-                                    })
-                
-                                    console.log("ID already exists in database");
-                                });
-                            }
-                            else {
-                                usersRef.set({
-                                    first_name: firstName,
-                                    last_name: lastName,
-                                    email: email,
-                                    password: password
-                                })
-                            }
-                            nextRecipe();
-                        })
-                    });
-                  
+                    $('#greeting').text(`Hello, Not signed in`);
                 }
-            },
-            error: () => {
-                console.log("Failed!");
-            },
-            dataType: "json"
-        });
+            });
+        
+            $('#logout').on('click', function(event) {
+                event.preventDefault();
+                signOut();
+            });
+        
+            $('#sidebar').on('mouseover', function (event) {
+                event.preventDefault();
+                document.getElementById('sidebar').style.width = '250px';
+                document.getElementById('page').style.marginLeft = '250px';
+            });
+        
+            $('#sidebar').on('mouseout', function (event) {
+                event.preventDefault();
+                document.getElementById('sidebar').style.width = '85px';
+                document.getElementById('page').style.marginLeft = '85px';
+            });
+        
+            $(document).on('click', '#thumbsDownBtn', function(event) {
+                event.preventDefault();
+                console.log("thumbs down");
+                nextRecipe();
+            });
+        
+            $('#name_button').on('click', (e) => {
+                let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
+                if (dairy.checked) {
+                    query = query + "&health=alcohol-free";
+                }
+                if (gluten.checked) {
+                    query = query + "&health=immuno-supportive";
+                }
+                if (vegan.checked) {
+                    query = query + "&health=vegan";
+                }
+                if (peanut.checked) {
+                    query = query + "&health=peanut-free";
+                }
+                if (snack.checked) {
+                    query = query + "&mealtype=snack";
+                }
+                if (breakfast.checked) {
+                    query = query + "&mealtype=breakfast";
+                }
+                if (lunch.checked) {
+                    query = query + "&mealtype=lunch";
+                }
+                if (dinner.checked) {
+                    query = query + "&mealtype=dinner";
+                }
+              
+                
+                $.get({
+                    url: query,
+                    success: (result) => {
+                        let allRecipes = result.hits;
+                        if (allRecipes.length == 0) {
+                            alert("No results");
+                        }
+                        else {
+                            let randomNum = randomNumber(allRecipes.length);
+                            let recipe = allRecipes[randomNum];
+                            let generalInfo = recipe["recipe"];
+                            let calories = generalInfo["calories"];
+                            let name = generalInfo["label"];
+                            let theUrl = generalInfo["url"];
+                            let imageLink = generalInfo["image"];
+                            let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
+                            padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
+                            $('#recipe_div').empty().append($food_img);
+                            let $food_name = $(`<p>${name}<p>`).addClass('food-name');
+                            $('#recipe_div').append($food_name);
+                           
+                            $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
+                            let $btn_div = $('<div></div>');
+                            let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
+                            let $no_btn = $(`<button type="submit" id="thumbsDownBtn"><i class="material-icons">thumb_down_alt</i></button>`).addClass('thumb-btn');
+                            $btn_div.append($no_btn,$yes_btn);
+                            $('#recipe_div').append($btn_div);
+                          
+                 
+                            $(document).on('click', '#thumbsUpBtn', function(event) {
+                                event.preventDefault();
+                                let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                                usersRef.get().then((docSnapshot) => {
+                                    if (docSnapshot.exists) {
+                                        usersRef.onSnapshot((doc) => {
+                                           
+                        
+                                            let recipe_object = {
+                                                name: name,
+                                                calories: calories,
+                                                url: theUrl,
+                                                image: imageLink
+                                            }
+                                            usersRef.update({
+                                                recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
+                                            })
+                                        });
+                                    }
+                                    else {
+                                        usersRef.set({
+                                            first_name: firstName,
+                                            last_name: lastName,
+                                            email: email,
+                                            password: password
+                                        })
+                                    }
+                                    nextRecipe();
+                                })
+                            });
+                          
+                        }
+                    },
+                    error: () => {
+                    },
+                    dataType: "json"
+                });
+            });
+        } else {
+            window.location.href = 'profile.html'; 
+        }
     });
+
+   
 });
 
 export function nextRecipe() {
@@ -189,25 +178,21 @@ export function nextRecipe() {
         success: (result) => {
             let allRecipes = result.hits;
             if (allRecipes.length == 0) {
-                //$('#recipe_list').append(`<li>No results</li>`);
             }
             else {
                 let randomNum = randomNumber(allRecipes.length);
                 let recipe = allRecipes[randomNum];
-                console.log(recipe);
                 let generalInfo = recipe["recipe"];
                 let calories = generalInfo["calories"];
                 let name = generalInfo["label"];
                 let theUrl = generalInfo["url"];
                 let imageLink = generalInfo["image"];
-                console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
                 let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
                 padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
                 $('#recipe_div').empty().append($food_img);
                 let $food_name = $(`<p>${name}<p>`).addClass('food-name');
                 $('#recipe_div').append($food_name);
                
-                //$('#recipe_div').append(`<p>Calories: ${calories}<p>`);
                 $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
                 let $btn_div = $('<div></div>');
                 let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
@@ -215,35 +200,24 @@ export function nextRecipe() {
                 $btn_div.append($no_btn,$yes_btn);
                 $('#recipe_div').append($btn_div);
               
-                console.log("Current user = " + authg.currentUser.uid);
-                // $('#recipe_div').empty().append(`<p>Name: ${name}<p>`);
-                // $('#recipe_div').append(`<p>Calories: ${calories}<p>`);
-                // $('#recipe_div').append(`<a href="${theUrl}">Click here to go to the recipe!</a>`);
-                // $('#recipe_div').append(`<p><img src=${imageLink} style="width: 400px; height: 400px;"><p>`);
-                // $('#recipe_div').append($(`<button id="likeButton">LIKE</button>`));
+             
                 $(document).on('click', '#thumbsUpBtn', function(event) {
-                    console.log('thumbs up');
                     event.preventDefault();
-                    console.log('likeButton clicked');
-                    console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
-                    // window.authUID = firebase.auth().currentUser.uid;
+                   
                     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
                     usersRef.get().then((docSnapshot) => {
                         if (docSnapshot.exists) {
                             usersRef.onSnapshot((doc) => {
-                                console.log(doc);
             
                                 let recipe_object = {
                                     name: name,
-                                    // calories: calories,
                                     url: theUrl,
                                     image: imageLink
                                 }
                                 usersRef.update({
                                     recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
                                 })
-            
-                                console.log("ID already exists in database");
+
                             });
                         }
                         else {
@@ -261,14 +235,13 @@ export function nextRecipe() {
             }
         },
         error: () => {
-            console.log("Failed!");
         },
     });
 
 }
 
  let recipeDat = {}
- let recipe_name = "howdy";
+ let recipe_name = "";
 
 export function getRecipe() {
     let query = "https://api.edamam.com/search?q=" + randomLetter() + "&app_id=adbcf639&app_key=0cd1cb104aac62dfc529549fb2f16bf2";
@@ -280,13 +253,10 @@ export function getRecipe() {
             success: (result) => {
                 let allRecipes = result.hits;
                 if (allRecipes.length == 0) {
-                    //$('#recipe_list').append(`<li>No results</li>`);
                 }
                 else {
-                    //let recipeDat = [3];
                     let randomNum = randomNumber(allRecipes.length);
                     let recipe = allRecipes[randomNum];
-                    console.log(recipe);
                     let generalInfo = recipe["recipe"];
                     let calories = generalInfo["calories"];
                     let name = generalInfo["label"];
@@ -299,23 +269,12 @@ export function getRecipe() {
 
                     recipe_name = name;
 
- 
-                    // recipeDat[0] 
-                    // recipeDat[recipename] = name;
-                    // recipeDat[url] = theUrl;
-                    // recipeDat[image] = imageLink;
-                    
-                    // recipeDat[0] = {name: name};
-                    // recipeDat[1] = {url: theUrl};
-                    // recipeDat[2] = {image: imageLink}; 
-                    console.log("Name = " + name + "  Calories = " + calories + "  Image_Link = " + imageLink);
                     let $food_img = $(`<p><img src=${imageLink} style= "height: 400px; width: 400px; border: 3px solid;
                     padding: 5px; border-color: #818181; border-radius: 8px;"></p>`).addClass('food-img');
                     $('#recipe_div').empty().append($food_img);
                     let $food_name = $(`<p>${name}<p>`).addClass('food-name');
                     $('#recipe_div').append($food_name);
                    
-                    //$('#recipe_div').append(`<p>Calories: ${calories}<p>`);
                     $('#recipe_div').append(`<a href="${theUrl}" target="_blank">Click here to go to the recipe!</a>`);
                     let $btn_div = $('<div></div>');
                     let $yes_btn = $(`<button type="button" id="thumbsUpBtn"><i class="material-icons">thumb_up_alt</i></button>`).addClass('thumb-btn');
@@ -323,19 +282,11 @@ export function getRecipe() {
                     $btn_div.append($no_btn,$yes_btn);
                     $('#recipe_div').append($btn_div);
                   
-                    console.log("Current user = " + authg.currentUser.uid);
-
-                    // $(document).on('click', '#thumbsUpBtn', function(event) {
                     $('#thumbsUpBtn').click(function() {
-                        // event.preventDefault();
-                        console.log('likeButton clicked');
-                        console.log(db.collection('users').doc(firebase.auth().currentUser.uid));
-                        // window.authUID = firebase.auth().currentUser.uid;
                         let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
                         usersRef.get().then((docSnapshot) => {
                             if (docSnapshot.exists) {
                                 usersRef.onSnapshot((doc) => {
-                                    console.log(doc);
                 
                                     let recipe_object = {
                                         name: name,
@@ -347,7 +298,6 @@ export function getRecipe() {
                                         recipe: firebase.firestore.FieldValue.arrayUnion(recipe_object)
                                     })
                 
-                                    console.log("ID already exists in database");
                                 });
                             }
                             else {
@@ -364,7 +314,6 @@ export function getRecipe() {
                 }
             },
             error: () => {
-                console.log("Failed!");
             },
         });
 }
@@ -373,11 +322,9 @@ function signOut() {
     let userId = "";
     authg.onAuthStateChanged(function (user) {
         if (user) {
-            console.log("Display Name = " + firebase.auth().currentUser.email);
             firebase.auth().signOut();
         }
         else {
-            console.log("No one logged in");
         }
     });
 }
@@ -430,7 +377,6 @@ export const body = function () {
 
     var $healthFilter = $('<div></div>').addClass('filter-div');
     var $health=$(`<p>Select Health Avoidances<p>`).addClass('filter-head');
-    //var $meal=$(`<p>Select mealtypes for filtered search<p>`);
     let $option5= $(`<input type="checkbox" id="dairy">`);
     let $span5 = $('<span class="checkmark"></span>');
     let $label5=$(`<label class="check" for="dairy">Alcohol-Free</label>`).append($option5, $span5);
@@ -452,11 +398,6 @@ export const body = function () {
     $filterSec.append($mealFilter, $healthFilter, $button);
     $body.append($filterSec, $info);
     getRecipe();
-    console.log("incoming is recipeDat");
-    console.log(recipeDat);
-    console.log(recipeDat['image']);
-    console.log("Recipe name = " + recipe_name);
-    // console.log(recipeDat.recipename);
    
     return $body;
 }

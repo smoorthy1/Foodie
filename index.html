@@ -12,10 +12,6 @@
 	</head>
 	
 	<body>
-		<!-- <div>
-			<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 5px;">Log In/Sign In</a>
-			<button onClick="signOut()" style="position: absolute; right: 10px; top: 5px;">Sign Out</button>
-		</div> -->
 		<div id="root"></div>
 
 		<script>
@@ -23,17 +19,14 @@
 				let userId = "";
 				authg.onAuthStateChanged(function (user) {
 					if (user) {
-						console.log("Display Name = " + firebase.auth().currentUser.email);
 						firebase.auth().signOut();
 					}
 					else {
-						console.log("No one logged in");
+					
 					}
 				});
 			}
 		</script>
-
-		<!-- <script src="node_modules/jquery/dist/jquery.js"></script> -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="mainView.js" type="module"></script>
 

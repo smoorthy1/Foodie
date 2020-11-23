@@ -13,10 +13,6 @@
 	</head>
 	
 	<body>
-		<!-- <div>
-			<a href="profile.html" class="button" style="position: absolute; right: 80px; top: 5px;">Log In/Sign In</a>
-			<button onClick="signOut()" style="position: absolute; right: 10px; top: 5px;">Sign Out</button>
-		</div> -->
 		
 		<div id="root"></div>
 
@@ -25,16 +21,13 @@
 				let userId = "";
 				authg.onAuthStateChanged(function (user) {
 					if (user) {
-						console.log("Display Name = " + firebase.auth().currentUser.email);
 						firebase.auth().signOut();
 					}
 					else {
-						console.log("No one logged in");
 					}
 				});
 			}
 		</script>
-		<!-- <script src="node_modules/jquery/dist/jquery.js"></script> -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="inboxView.js" type="module"></script>

@@ -36,32 +36,11 @@ export const body = function() {
     var $photo10 = $('<img src="milkshake.jpg" alt="Food11">').addClass('resize');
    
     $('<div></div>').addClass('column').append($photo1, $photo2, $photo10, $photo3).appendTo($photoGallery);
-    // $('<div></div>').addClass('column').append($photo2).appendTo($photoGallery);
-    // $('<div></div>').addClass('column').append($photo3).appendTo($photoGallery);
     $('<div></div>').addClass('column').append($photo4, $photo8, $photo7).appendTo($photoGallery);
-    // $('<div></div>').addClass('column').append($photo8).appendTo($photoGallery);
-    // $('<div></div>').addClass('column').append($photo5).appendTo($photoGallery);
     $('<div></div>').addClass('column').append($photo9, $photo5, $photo6).appendTo($photoGallery);
-    // $('<div></div>').addClass('column').append($photo6).appendTo($photoGallery);
-    // $('<div></div>').addClass('column').append($photo7).appendTo($photoGallery);
-
-
-   
     $body.append($head, $blurb, $photoGallery);
     return $body; 
 }
-
-// export const slideshow = function() {
-//     var $photoGallery = $('<div id="slideShow"></div>');
-   
-//     $('<div></div>').append($photo1).appendTo($photoGallery);
-//     $('<div></div>').append($photo2).appendTo($photoGallery);
-//     $('<div></div>').append($photo3).appendTo($photoGallery);
-
-//     return $photoGallery;
-// }
-
-
 
 export const footer = function() {
     var $footer = $('<div></div>').addClass('footer');
@@ -77,8 +56,6 @@ export const sideBar = function() {
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
     $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
-    // $('<a href="debounce.html">debounce</a>').appendTo($sideBar);
-    //var $bottom = $('<div></div>').addClass('div-wrapper').appendTo($sideBar);
     $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
     return $sideBar;
 }
@@ -87,19 +64,15 @@ function signOut() {
     let userId = "";
     authg.onAuthStateChanged(function (user) {
         if (user) {
-            console.log("Display Name = " + firebase.auth().currentUser.email);
             firebase.auth().signOut();
         }
         else {
-            console.log("No one logged in");
         }
     });
 }
 
 $(document).ready(() => {
     const $root = $('#root');
-
-    // $('#root').append(`<div id="header"></div>`);
 
     const $page = $('<div id="page"><div>').addClass('main');
     $page.append(logInHead(), createHome(), body(), footer());
@@ -108,11 +81,9 @@ $(document).ready(() => {
     $('#header').append(`<p id="greeting">Please sign in</p>`);
     authg.onAuthStateChanged(function (user) {
         if (user) {
-            console.log("Display Name = " + firebase.auth().currentUser.email);
             $('#greeting').text(`Hello, ${firebase.auth().currentUser.email}`);
         }
         else {
-            console.log("No one logged in");
             $('#greeting').text(`Hello, Not signed in`);
         }
     });
@@ -121,9 +92,6 @@ $(document).ready(() => {
         event.preventDefault();
         signOut();
     });
-
-
-
 
     $('#sidebar').on('mouseover', function(event) {
         event.preventDefault();

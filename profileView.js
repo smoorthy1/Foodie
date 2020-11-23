@@ -7,17 +7,6 @@ export const logInHead = function() {
     return $container;
 }
 
-/*
-export const createHome = function() {
-    var $container = $('<div></div>').addClass('cropped');
-    var $photo = $('<img src="food.jpg" alt="Food">').addClass('bg-img');
-    var $siteName = $('<div>Foodie</div>').addClass('centered');
-    $container.append($photo, $siteName);
-    
-    return $container;
-}
-*/
-
 export const createHome = function() {
     var $container = $('<div></div>').addClass('header-profile');
     var $photo = $('<img src="food2.jpg" alt="Food">').addClass('ibx-img');
@@ -50,9 +39,7 @@ export const createForm = function(id) {
     var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" style="margin-right: 350px;" class="button" />');
 
     usersRef.get().then(function(doc) {
-        console.log(doc.data());
         if(doc.data()) {
-            console.log("Did you get into the userRef form???");
             $title.append($(`<h1>${doc.data().first_name} ${doc.data().last_name}</h1>`).addClass('contact'));
             $fname.append($(`<input type="text" id="fname" name="firstname" placeholder="${doc.data().first_name}">`));
             $lname.append($(`<input type="text" id="lname" name="lastname" placeholder="${doc.data().last_name}">`));
@@ -69,9 +56,7 @@ export const createForm = function(id) {
         }
 
         $(document).on('click', '#updateProfile', function(event) {
-            console.log("User attempting to be updated");
             event.preventDefault();
-            console.log("current first name = " + document.getElementById('fname').value);
             let new_first_name = document.getElementById('fname').value;
             let new_last_name = document.getElementById('lname').value;
             let new_password = document.getElementById('pass').value;
@@ -93,7 +78,6 @@ export const createForm = function(id) {
             })
             if (document.getElementById('pass').value !== '') {
                 firebase.auth().currentUser.updatePassword(new_password).then(() => {
-                    console.log("Password successfully changed");
                 }, (error) => {
                     console.log(error);
                 });
@@ -103,7 +87,6 @@ export const createForm = function(id) {
         console.log("Error getting document:", error);
     });
 
-    
     return $container;
 }
 
@@ -121,7 +104,6 @@ export const sideBar = function() {
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
     $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
-    //var $bottom = $('<div></div>').addClass('div-wrapper').appendTo($sideBar);
     $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
     return $sideBar;
 }
@@ -130,11 +112,9 @@ function signOut() {
     let userId = "";
     authg.onAuthStateChanged(function (user) {
         if (user) {
-            console.log("Display Name = " + firebase.auth().currentUser.email);
             firebase.auth().signOut();
         }
         else {
-            console.log("No one logged in");
         }
     });
 }
@@ -143,9 +123,7 @@ export function deleteUser() {
     auth.onAuthStateChanged(function(user) {
         if(user) {
             var email = user.email;
-            console.log("Current user = " + auth.currentUser.uid);
             auth.currentUser.delete().then(function() {
-                console.log("User deleted successfully");
             }).catch(function(error) {
                 console.log(error);
                 console.log("unexpected user deletion error");  
@@ -159,16 +137,10 @@ export function deleteUser() {
 }
 
 $(function() {
-    // const $root = $('#root');
-    // const $page = $('<div id="page"><div>').addClass('main');
-    // $page.append(logInHead(), createHome(), createForm(), footer());
-    // $root.append(sideBar(), $page);
-
 
     auth.onAuthStateChanged(function(user) {
         if(user) {
             window.authUID = firebase.auth().currentUser.uid;
-            console.log(authUID);
 
             const $root = $('#root');
             const $page = $('<div id="page"><div>').addClass('main');
@@ -178,11 +150,9 @@ $(function() {
             $('#header').append(`<p id="greeting">Please sign in</p>`);
             authg.onAuthStateChanged(function (user) {
                 if (user) {
-                    console.log("Display Name = " + firebase.auth().currentUser.email);
                     $('#greeting').text(`Hello, ${firebase.auth().currentUser.email}`);
                 }
                 else {
-                    console.log("No one logged in");
                     $('#greeting').text(`Hello, Not signed in`);
                 }
             });
@@ -206,18 +176,15 @@ $(function() {
 
             $('#upload').on('change', function(event) {
                 $('#profilePic').attr('src', $('#upload').val());
-                console.log($('#upload').val());
             });
 
             $(document).on('click', '#deleteUser', function(event) {
-                console.log("User deleted");
                 event.preventDefault();
                 deleteUser();  
             })
 
         }
         else {
-            alert("No Active User");
             window.location.href = 'profile.html'; 
         }
     });

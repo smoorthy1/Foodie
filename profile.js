@@ -16,27 +16,22 @@ window.authg = firebase.auth();
 const auth = firebase.auth();
 
 export function signUp() {
-    console.log("is signup proced?");
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
-    console.log("signing up with email = " + email + "  password = " + password);
     const promise = auth.createUserWithEmailAndPassword(email, password);
         
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
 
     promise.then((value) => {
-        console.log(value.user.uid);
         window.uid = value.user.uid;
         let usersRef = db.collection('users').doc(value.user.uid);
         usersRef.get().then((docSnapshot) => {
             if (docSnapshot.exists) {
                 usersRef.onSnapshot((doc) => {
-                    console.log("ID already exists in database");
                 });
             }
             else {
-                console.log("adding user to database");
                 usersRef.set({
                     first_name: firstName,
                     last_name: lastName,
@@ -48,8 +43,6 @@ export function signUp() {
         })
     })
     promise.catch(e => alert(e.message));
-    // promise.then(signIn());
-    console.log("Signed in");
 }
 
 export function signIn(){
@@ -57,62 +50,30 @@ export function signIn(){
     var password = null;
 
     if(document.getElementById("email").value && document.getElementById("password").value) {
-        console.log("Signing in email");
         email = document.getElementById("email").value;
         password = document.getElementById("password").value;
     } else {
-        console.log("Logging in email");
         email = document.getElementById("emailLogin").value;
         password = document.getElementById("passwordLogin").value;
     }
 
-    console.log("Email = " + email + "  Password = " + password);
-
     const promise = auth.signInWithEmailAndPassword(email, password);
-    /*
+
     promise.then((value) => {
-        console.log(value.user.uid);
-        window.uid = value.user.uid;
-        let usersRef = db.collection('users').doc(value.user.uid);
-        usersRef.get().then((docSnapshot) => {
-            if (docSnapshot.exists) {
-                usersRef.onSnapshot((doc) => {
-                    console.log("ID already exists in database");
-                });
-            }
-            else {
-                usersRef.set({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    password: password
-                })
-            }
-        })
-        window.location.href = "app.html"; 
-    })
-    */
-    promise.then((value) => {
-        console.log("Got to signin then promise");
         window.location.href = "profilepage.html"; 
     })
     promise.catch(e => alert(e.message)); 
-    // promise.then(window.location.href = "app.html"); 
-    // alert("Signed In");
 }
 
 export function signOut(){ 
     auth.signOut();
-    alert("Signed Out");
 }
 
 export function deleteUser() {
     auth.onAuthStateChanged(function(user) {
         if(user) {
             var email = user.email;
-            console.log("Current user = " + auth.currentUser.uid);
             auth.currentUser.delete().then(function() {
-                console.log("User deleted successfully");
             }).catch(function(error) {
                 console.log(error);
                 console.log("unexpected user deletion error");  
@@ -125,22 +86,6 @@ export function deleteUser() {
     });
 }
 
-/*
-auth.onAuthStateChanged(function(user) {
-    if(user) {
-        var email = user.email;
-        alert("Active User " + email);
-        console.log("Current user = " + auth.currentUser);
-        //Take user to app page
-        //window.location.href = "app.html";
-    }
-    else {
-        alert("No Active User");
-        //no user is signed in
-    }
-    
-});
-*/
 
 
 

@@ -17,12 +17,10 @@
 			function signOut() {
 				authg.onAuthStateChanged(function (user) {
 					if (user) {
-						console.log("Display Name = " + firebase.auth().currentUser.email);
 						firebase.auth().signOut();
 						window.location.href = "profile.html"; 
 					}
 					else {
-						console.log("No one logged in");
 					}
 				});
 			}
@@ -33,7 +31,6 @@
 				authg.onAuthStateChanged(function(user) {
 					if(user) {
 						// gets the user UID - VERY IMPORTANT !!!
-						console.log("Display Name = " + firebase.auth().currentUser.uid);
 						window.authUID = firebase.auth().currentUser.uid;
 						// $page.append(`<p id="greeting">Hello, ${firebase.auth().currentUser.displayName}</p>`);
 						//is signed in
@@ -41,8 +38,6 @@
 						usersRef.get().then((docSnapshot) => {
 							if (docSnapshot.exists) {
 								usersRef.onSnapshot((doc) => {
-									console.log(doc);
-									console.log("ID already exists in database");
 								});
 							}
 							else {
@@ -56,7 +51,6 @@
 						})
 					}
 					else {
-						console.log("No one logged in");
 					}
 				});
 			}
@@ -64,7 +58,6 @@
 		<div id="root">
 		</div>
 
-		<!-- <script src="node_modules/jquery/dist/jquery.js"></script> -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="scripts.js" type="module"></script>
 		<ul id="recipe_list"></ul>
