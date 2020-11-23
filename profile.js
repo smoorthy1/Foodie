@@ -69,36 +69,15 @@ export function signIn(){
     console.log("Email = " + email + "  Password = " + password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
-    /*
-    promise.then((value) => {
-        console.log(value.user.uid);
-        window.uid = value.user.uid;
-        let usersRef = db.collection('users').doc(value.user.uid);
-        usersRef.get().then((docSnapshot) => {
-            if (docSnapshot.exists) {
-                usersRef.onSnapshot((doc) => {
-                    console.log("ID already exists in database");
-                });
-            }
-            else {
-                usersRef.set({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    password: password
-                })
-            }
-        })
-        window.location.href = "app.html"; 
-    })
-    */
+
     promise.then((value) => {
         console.log("Got to signin then promise");
         window.location.href = "profilepage.html"; 
     })
-    promise.catch(e => alert(e.message)); 
-    // promise.then(window.location.href = "app.html"); 
-    // alert("Signed In");
+    promise.catch(e => {
+        document.getElementById("loginError").innerHTML = "Incorrect Password";
+        console.log(e.message)
+    }); 
 }
 
 export function signOut(){ 
@@ -124,23 +103,4 @@ export function deleteUser() {
         
     });
 }
-
-/*
-auth.onAuthStateChanged(function(user) {
-    if(user) {
-        var email = user.email;
-        alert("Active User " + email);
-        console.log("Current user = " + auth.currentUser);
-        //Take user to app page
-        //window.location.href = "app.html";
-    }
-    else {
-        alert("No Active User");
-        //no user is signed in
-    }
-    
-});
-*/
-
-
 
