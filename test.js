@@ -25,7 +25,6 @@ const signInPage = function() {
     var $email = $('<input type="email" placeholder="email" id="emailLogin" required="email" />');
     var $pass = $('<input type="password" placeholder="password" id="passwordLogin" required/>');
     var $loginBtn = $('<input type="submit" value="Login" id="signIn" class="button" />');
-    var $deleteBtn = $('<input type="submit" value="Delete Account" id="deleteUser" class="button" />');
     var $loginError = $('<p id="loginError"></p>');
     $loginFormInput.append($email, $pass, $loginBtn, $loginError);
     $loginForm.append($loginTitle, $loginFormInput);

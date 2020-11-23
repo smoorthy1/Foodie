@@ -76,7 +76,7 @@ export function signIn(){
     })
     promise.catch(e => {
         document.getElementById("loginError").innerHTML = "Incorrect Password";
-        console.log(e.message)
+        // console.log(e.message)
     }); 
 }
 
