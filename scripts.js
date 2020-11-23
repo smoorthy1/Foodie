@@ -133,8 +133,6 @@ $(document).ready(() => {
                     },
                     error: () => {
                         // alert("API limit (5 calls/minute) reached");
-                        var modal = document.getElementById("myModal");
-                        var span = document.getElementsByClassName("close")[0];
                         $('#recipe_div').append(    `<div id="myModal" class="modal">
                                                         <div class="modal-content">
                                                             <span class="close">&times;</span>
@@ -142,6 +140,8 @@ $(document).ready(() => {
                                                         </div>
                                                     </div>`
                         )
+                        var modal = document.getElementById("myModal");
+                        var span = document.getElementsByClassName("close")[0];
                         modal.style.display = "block";
                         span.onclick = function() {
                             modal.style.display = "none";
@@ -255,8 +255,6 @@ export function nextRecipe() {
         error: () => {
             // alert("API limit (5 calls/minute) reached");
             // $('#recipe_div').empty();
-            var modal = document.getElementById("myModal");
-            var span = document.getElementsByClassName("close")[0];
             $('#recipe_div').append(    `<div id="myModal" class="modal">
                                             <div class="modal-content">
                                                 <span class="close">&times;</span>
@@ -264,6 +262,8 @@ export function nextRecipe() {
                                             </div>
                                         </div>`
             )
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
             modal.style.display = "block";
             span.onclick = function() {
                 modal.style.display = "none";
@@ -353,8 +353,6 @@ export function getRecipe() {
             },
             error: () => {
                 // alert("API limit (5 calls/minute) reached");
-                var modal = document.getElementById("myModal");
-                var span = document.getElementsByClassName("close")[0];
                 $('#recipe_div').append(    `<div id="myModal" class="modal">
                                                 <div class="modal-content">
                                                     <span class="close">&times;</span>
@@ -362,6 +360,8 @@ export function getRecipe() {
                                                 </div>
                                             </div>`
                 )
+                var modal = document.getElementById("myModal");
+                var span = document.getElementsByClassName("close")[0];
                 modal.style.display = "block";
                 span.onclick = function() {
                     modal.style.display = "none";
