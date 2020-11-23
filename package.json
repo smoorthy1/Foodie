@@ -5,13 +5,18 @@
   "description": "Web Application that allows clients to peruse various foods and can select specific foods and be presented specific recipes for the user to make.",
   "main": "app.js",
   "dependencies": {
+    "algoliasearch": "^4.8.0",
     "browser-sync": "^2.26.12",
     "firebase": "^8.0.0",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "jquery-ui-dist": "^1.12.1",
+    "webpack": "^5.6.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:dev": "webpack --display-error-details --config webpack.config.js --progress --color",
+    "build:prod": "webpack --env.prod --config webpack.config.js --progress --color"
   },
   "repository": {
     "type": "git",

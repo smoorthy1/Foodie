@@ -136,9 +136,12 @@ export function deleteUser() {
     });
 }
 
-$(function() {
-
-    auth.onAuthStateChanged(function(user) {
+//$(function() {
+$(document).ready(() => {
+    console.log("authg", authg);
+    let Jonjon = "Silly";
+    
+    authg.onAuthStateChanged(function(user) {
         if(user) {
             window.authUID = firebase.auth().currentUser.uid;
 
