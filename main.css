@@ -1,4 +1,3 @@
-/*CSS page for home page, we can create more for others if needed*/
 
 img {
     width: 100%;
@@ -102,10 +101,6 @@ p {
     text-align: center;
 }
 
-/* .container-form {
-  position: relative;
-  text-align: center;
-} */
 
 .main {
     padding: 16px;
@@ -249,8 +244,6 @@ p {
   }
 
   .column {
-    /* float: left; */
-    /* width: 33.33%; */
     -ms-flex: 25%;
     flex: 25%;
     max-width: 25%;
@@ -270,9 +263,6 @@ p {
   }
 
   .row {
-    /* display: flex; 
-    flex-wrap: wrap;
-    padding: 0 4px; */
     display: -ms-flexbox; 
     display: flex;
     -ms-flex-wrap: wrap; 
@@ -280,12 +270,6 @@ p {
     padding: 0 4px;
     
   }
-
-  /* .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  } */
 
   img.resize {
     width: 100%;
@@ -444,7 +428,6 @@ a.button {
   appearance: button;
   border-style: solid;
   border-width: 2px;
-  /* border: none; */
   border-radius: 4px;
   padding: 3px;
   text-decoration: none;
@@ -483,7 +466,6 @@ a.button:hover {
   font-weight: bolder;
   font-size: 15px;
   cursor: pointer;
-  /* border: none; */
   padding: 3px;
   border-radius: 4px;
   
@@ -495,11 +477,7 @@ a.button:hover {
 }
 
 .food-img {
-  /* height: 600px;
-  width: 600px; */
   display: inline-block;
-  /* margin-left: 10px; */
-  /* margin-right: 60px; */
 }
 
 
@@ -534,14 +512,9 @@ a.button:hover {
 }
 
 .filter-head {
-  /* font-family: Ink Free;  */
   font-weight: bolder;
   font-size: 15px;
 }
-
-
-
-
 
 * {
 	margin: 0;
@@ -550,10 +523,7 @@ a.button:hover {
 	-moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-/* body {
-	background: #175690;
-	font-family: 'open sans', sans-serif;
-} */
+
 .forms {
 	background: #fff;
 	box-shadow: 0 0 10px #111;
@@ -576,9 +546,6 @@ a.button:hover {
 
 }
 #signup { display: none; }
-/* .tab-content > div:last-child {
-  display: none;
-} */
 
 .forms .tab-group {
 	list-style: none;
@@ -658,19 +625,6 @@ a.button:hover {
   background: #B5A493; 
 }
 
-/* input[type='checkbox'] {
-  display: block;
-  position: absolute;
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-}
-
-input[type='checkbox']:checked:after {
-  background: #111;
-  color: #fff;
-} */
-
 .check input {
   position: absolute;
   opacity: 0;
@@ -724,7 +678,6 @@ input[type='checkbox']:checked:after {
 
 .filter-sec {
   width: 200px;
-  /* float: left; */
   text-align: left;
   font-weight: bolder;
   font-size: 16px;
@@ -764,14 +717,10 @@ input[type='checkbox']:checked:after {
   max-width: 310px;
   background-color: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  /* float: left; */
   display: inline-table;
   margin-right: 40px;
   margin-bottom: 30px;
   margin-top: 30px;
-  /* width: 25%;
-  padding: 5px; */
-  
 }
 
 .polaroid-container {

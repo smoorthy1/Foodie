@@ -7,7 +7,6 @@ const sideBar = function() {
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
     $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
-    //var $bottom = $('<div></div>').addClass('div-wrapper').appendTo($sideBar);
     $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
     return $sideBar;
 }
@@ -50,38 +49,18 @@ $(document).ready(() => {
 
     const $root = $('#header');
     const $page = $('<div id="page"><div>').addClass('main');
-    //$page.append(`<p id="greeting">Welcome</p>`);
     $page.append(signInPage());
     $root.append(sideBar(), $page);
 
     authg.onAuthStateChanged(function(user) {
         if (firebase.auth().currentUser) {
-            // let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-            console.log("checkpoint 1");
-            console.log(firebase.auth().currentUser.email);
-            //document.getElementById("greeting").innerHTML = `Hello, ${firebase.auth().currentUser.email}`;
-            /*
-            usersRef.get().then(function(doc) {
-                if (doc.exists) {
-                    console.log("Did it get here?");
-                    console.log(doc.data());
-                    document.getElementById("greeting").innerHTML = `Hello, ${doc.data().first_name} ${doc.data().last_name}`;
-                }
-                else {
-                    alert("No data found in database");
-                }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            })
-            */
+            
         }
         else {
             console.log("No current user found");
-            //document.getElementById("greeting").innerHTML = `Not signed in`;
         }
     });
 
-    // $root.append(sideBar(), $page);
 
     $('.tab a').on('click', function (e) {
         e.preventDefault();
@@ -98,11 +77,6 @@ $(document).ready(() => {
         event.preventDefault();
         signIn(); 
     });
-
-    // $('#deleteUser').on('click', function(event) {
-    //     event.preventDefault();
-    //     deleteUser();
-    // });
 
     $('#signUpbtn').on('click', function(event) {
         event.preventDefault();

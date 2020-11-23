@@ -18,25 +18,16 @@ export const header = function() {
 export const body = function(id) {
 
     var $body = $('<div id="inboxBody"></div>');
-    
-    
-
-    //var $head = $(`<h1>Hello, ${id}<h1>`);
-    //$body.append($head);
-
     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
 
     usersRef.get().then(function(doc) {
         let allRecipeNames = [];
         if (doc.exists) {
-            console.log(doc.data().first_name);
             var $head = $(`<h1>Hello, ${doc.data().first_name}<h1>`);
             $body.append($head);
             $body.append(`<form>
                             <input type="search" id="text-search" placeholder="Search your recipes here" />
                           </form>`);
-                        //   <button type="button" id="executeSearch">Submit</button>
-            console.log("Document data:", doc.data().recipe);
             let recipe_list = doc.data().recipe;
             let recipeCounter = 0;
             recipe_list.forEach(recipe => {
@@ -61,16 +52,11 @@ export const body = function(id) {
             })
 
             // code that deals with setting up searches
-            // $grid.append($gridCol);
-            // $body.append($grid);
-            console.log("All recipe names = ");
-            console.log(allRecipeNames);
             $body.append(`<p id="output"></p>`);
             $body.append(`<ul id="matches"></ul>`);
 
             const KEY = 'debounce-terms';
             let init = function(searchTerm) {
-                console.log("init function searchTerm = " + searchTerm);
                 $('#text-search').on('input', efficientSearch(searchTerm));
                 let testArray = allRecipeNames; 
                 localStorage.setItem(KEY, JSON.stringify(testArray));
@@ -84,13 +70,10 @@ export const body = function(id) {
                         let pattern = new RegExp(t, 'i'); 
                         let terms = JSON.parse(localStorage.getItem(KEY));
                         let matches = terms.filter(term => pattern.test(term));
-                        console.log('matches', matches);
-                        console.log("Matches length = " + matches.length);
                         resolve(matches);
 
                         $("div.polaroid").remove();
 
-                        console.log("My searchterms are: " + searchTerms);
                         let searchTermLength = searchTerms.length;
                         let recipe_counter = 0;
                         recipe_list.forEach(recipe => {
@@ -134,7 +117,6 @@ export const body = function(id) {
             };
 
             let efficientSearch = debounce(function(searchTerm){
-                    console.log("efficientSearch function searchTerm = " + searchTerm);
                     let text = searchTerm;
                     $('#output').innerHTML = 'List Matching ${text}';
                     let ul = $('#matches');
@@ -142,21 +124,14 @@ export const body = function(id) {
                 }, 300);
 
             $(document).on('input', '#text-search', function() {
-                console.log("did you type something?");
-                console.log($('text-search').value);
-                console.log(document.getElementById('text-search').value);
                 init(document.getElementById('text-search').value);
             });
 
             $('#text-search').on('autocompletechange change', function () {
-                console.log(this.value);
-                console.log("$('text-search').value = " + $('text-search').value);
-            })
+            });
 
             $('#text-search').change(function() {
-                console.log("text-search was changed");
-                console.log("text-search was changed to " + $('#text-search').value);
-            })
+            });
 
             $('#text-search').autocomplete({
                 source: allRecipeNames, 
@@ -169,15 +144,10 @@ export const body = function(id) {
                 minLength: 1
             });
 
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("Inbox is empty!");
-            alert("Your inbox is empty!");
-        }
+        } 
     }).catch(function(error) {
         console.log("Error getting document:", error);
     });
-    console.log("checkpoint 2");
 
     return $body; 
 }
@@ -196,7 +166,6 @@ export const sideBar = function() {
     $('<a href="inbox.html"><span><i class="material-icons">all_inbox</i><span class="icon-text">Recipe Inbox</span></a><br>').appendTo($sideBar);
     $('<a href="profilepage.html"><span><i class="material-icons">person</i><span class="icon-text">Profile</span></a><br>').appendTo($sideBar);
     $('<a href="contact.html"><span><i class="material-icons">contact_support</i><span class="icon-text">Contact</span></a><br>').appendTo($sideBar);
-    //var $bottom = $('<div></div>').addClass('div-wrapper').appendTo($sideBar);
     $('<img src="foodie_logo.jpg" alt="Logo">').addClass('logo').appendTo($sideBar);
     return $sideBar;
 }
@@ -205,35 +174,24 @@ function signOut() {
     let userId = "";
     authg.onAuthStateChanged(function (user) {
         if (user) {
-            console.log("Display Name = " + firebase.auth().currentUser.email);
             firebase.auth().signOut();
         }
         else {
-            console.log("No one logged in");
         }
     });
 }
 
 
 $(document).on('click', '#deleteRecipe', function(event) {
-    console.log("Clicked on Delete Recipe");
     let id = $(this).parent().parent().parent().attr('id');
-    console.log("id = " + id);
     let id_number = id.split("_")[1];
-    console.log("id number = " + id_number);
     let usersRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-    console.log(usersRef);
 
     // ENDED WORK HERE: YOU NEED TO FIGURE OUT HOW TO DELETE RECIPE FROM USER'S BACKEND GIVEN THE ID NUMBER
     // the idea is to use the ID number here, which cooresponds to the backend data, to delete the right element
     // however, if you query using a search, the results won't be the same index as the backend so... think of a solution
     usersRef.get().then(function(doc) {
-        console.log("checkpoint");
-        console.log(doc.data());
         if (doc.exists) {
-            console.log(doc.data().first_name);
-            console.log("This is the recipe for this id:");
-            console.log(doc.data().recipe[id_number]);
             let recipeToDelete = doc.data().recipe[id_number];
             usersRef.update({
                 recipe: firebase.firestore.FieldValue.arrayRemove(recipeToDelete)
@@ -241,8 +199,7 @@ $(document).on('click', '#deleteRecipe', function(event) {
             $(`#${id}`).remove();
         } else {
             // doc.data() will be undefined in this case
-            console.log("Inbox is empty!");
-            alert("Your inbox is empty!");
+           
         }
     }).catch(function(error) {
         console.log("Error getting document:", error);
@@ -295,15 +252,12 @@ $(document).ready(() => {
             });  
         }
         else {
-            alert("No Active User");
             window.location.href = 'profile.html'; 
         }
     });
     
     if ($('#root').is('empty')) {
-        alert("empty page");
+        console.log('empty');
     }
-    // need to redirect users to login page if they haven't signed in yet. Should go down here.
-
     
 })
