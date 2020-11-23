@@ -132,7 +132,25 @@ $(document).ready(() => {
                         }
                     },
                     error: () => {
-                    },
+                        // alert("API limit (5 calls/minute) reached");
+                        var modal = document.getElementById("myModal");
+                        var span = document.getElementsByClassName("close")[0];
+                        $('#recipe_div').append(    `<div id="myModal" class="modal">
+                                                        <div class="modal-content">
+                                                            <span class="close">&times;</span>
+                                                            <p style="text-align:center">API limit (5 calls/minute) reached! Please wait a few seconds and try again.</p>
+                                                        </div>
+                                                    </div>`
+                        )
+                        modal.style.display = "block";
+                        span.onclick = function() {
+                            modal.style.display = "none";
+                        }
+                        window.onclick = function(event) {
+                            if (event.target == modal) {
+                                modal.style.display = "none";
+                            }
+                        }                    },
                     dataType: "json"
                 });
             });
@@ -235,6 +253,26 @@ export function nextRecipe() {
             }
         },
         error: () => {
+            // alert("API limit (5 calls/minute) reached");
+            // $('#recipe_div').empty();
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+            $('#recipe_div').append(    `<div id="myModal" class="modal">
+                                            <div class="modal-content">
+                                                <span class="close">&times;</span>
+                                                <p style="text-align:center">API limit (5 calls/minute) reached! Please wait a few seconds and try again.</p>
+                                            </div>
+                                        </div>`
+            )
+            modal.style.display = "block";
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
         },
     });
 
@@ -314,6 +352,25 @@ export function getRecipe() {
                 }
             },
             error: () => {
+                // alert("API limit (5 calls/minute) reached");
+                var modal = document.getElementById("myModal");
+                var span = document.getElementsByClassName("close")[0];
+                $('#recipe_div').append(    `<div id="myModal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close">&times;</span>
+                                                    <p style="text-align:center">API limit (5 calls/minute) reached! Please wait a few seconds and try again.</p>
+                                                </div>
+                                            </div>`
+                )
+                modal.style.display = "block";
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }            
             },
         });
 }
