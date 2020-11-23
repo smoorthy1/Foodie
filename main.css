@@ -805,6 +805,20 @@ input[type='checkbox']:checked:after {
   color: #B5A493;
 }
 
+input[type=search] {
+  border-radius: 8px;
+  outline: none;
+  width: 500px;
+  border-width: 2px;
+  font-family: Bahnschrift;
+  font-size: 15px;
+  padding: 5px;
+}
+
+ul li:active {
+  background-color: #111;
+}
+
 
 
 

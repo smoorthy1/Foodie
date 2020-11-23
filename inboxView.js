@@ -34,8 +34,8 @@ export const body = function(id) {
             $body.append($head);
             $body.append(`<form>
                             <input type="search" id="text-search" placeholder="Search your recipes here" />
-                            <button type="button" id="executeSearch">Submit</button>
                           </form>`);
+                        //   <button type="button" id="executeSearch">Submit</button>
             console.log("Document data:", doc.data().recipe);
             let recipe_list = doc.data().recipe;
             let recipeCounter = 0;
@@ -68,44 +68,15 @@ export const body = function(id) {
             $body.append(`<p id="output"></p>`);
             $body.append(`<ul id="matches"></ul>`);
 
-            $(document).on('click', '#executeSearch', function(event) {
-                console.log("Clicked search");
-                $("div.polaroid").remove();
-                let searchTerms = document.getElementById('text-search').value;
-                console.log("search terms = " + searchTerms);
-                let searchTermLength = searchTerms.length;
-                let recipe_counter = 0;
-                recipe_list.forEach(recipe => {
-                    if (recipe.name.substring(0, searchTermLength).toUpperCase() == searchTerms.toUpperCase()) {
-                        let filtered_name = recipe.name;
-                        allRecipeNames.push(name);
-                        let filtered_image = recipe.image;
-                        let filtered_url = recipe.url;
-                        let recipe_card = `<div class="polaroid" id="recipeCard_${recipe_counter}">
-                                                <img src=${filtered_image} alt="recipeImg" style="width:75%; display: block; margin-left: auto; margin-right: auto; padding:18px;">
-                                                <div class="polaroid-container">
-                                                    <p>${filtered_name}</p>
-                                                    <a href="${filtered_url}" target="_blank" style="font-size: 15px;">Recipe Link</a>
-                                                    <div>
-                                                        <button id="deleteRecipe"><i class="material-icons">delete</i></button>
-                                                    </div>
-                                                </div>
-                                            </div>`
-                        $body.append(recipe_card);
-                    }
-                    recipe_counter++;
-                })
-            });
-
-            
             const KEY = 'debounce-terms';
-            let init = function() {
-                $('#text-search').on('input', efficientSearch);
+            let init = function(searchTerm) {
+                console.log("init function searchTerm = " + searchTerm);
+                $('#text-search').on('input', efficientSearch(searchTerm));
                 let testArray = allRecipeNames; 
                 localStorage.setItem(KEY, JSON.stringify(testArray));
             }
 
-            let getList = function(text) {
+            let getList = function(searchTerms) {
                 return new Promise((resolve, reject) => {
                     let r = Math.floor(Math.random()*1000);
                     setTimeout((function() {
@@ -119,7 +90,7 @@ export const body = function(id) {
 
                         $("div.polaroid").remove();
 
-                        let searchTerms = document.getElementById('text-search').value;
+                        console.log("My searchterms are: " + searchTerms);
                         let searchTermLength = searchTerms.length;
                         let recipe_counter = 0;
                         recipe_list.forEach(recipe => {
@@ -142,23 +113,8 @@ export const body = function(id) {
                             }
                             recipe_counter++;
                         })
-                        $('#text-search').autocomplete({
-                            source: allRecipeNames, 
-                            select: function(event, ui) {
-                                var e = jQuery.Event("keydown", { keyCode: 20 });
-                                $("#text-search").trigger(e);
-                                $('text-search').val(ui.item.value);
-                                console.log($('text-search').value);
-                                init();
-                                console.log("ui item = " + ui.item.value);
-                            }
-                        }, {
-                            autoFocus: true,
-                            delay: 300,
-                            minLength: 1
-                        });
 
-                    }).bind(text), r);
+                    }).bind(searchTerms), r);
                 })
             }
 
@@ -177,27 +133,41 @@ export const body = function(id) {
                 };
             };
 
-            let efficientSearch = debounce(function(e){
-                let text = e.target.value;
-                // console.log(text);
-                // document.getElementById('output').textContent = List Matching ${text};
-                $('#output').innerHTML = 'List Matching ${text}';
-                // let ul = document.getElementById('matches');
-                let ul = $('#matches');
-                
-                //call an asynchronous search to match what has been typed
-                getList(text).catch(error=>console.warn(error));
-            }, 300);
+            let efficientSearch = debounce(function(searchTerm){
+                    console.log("efficientSearch function searchTerm = " + searchTerm);
+                    let text = searchTerm;
+                    $('#output').innerHTML = 'List Matching ${text}';
+                    let ul = $('#matches');
+                    getList(text).catch(error=>console.warn(error));
+                }, 300);
 
-            // $('#inboxBody').on('custom', init);
-            // $(document).keypress(init); 
             $(document).on('input', '#text-search', function() {
-                init();
+                console.log("did you type something?");
+                console.log($('text-search').value);
+                console.log(document.getElementById('text-search').value);
+                init(document.getElementById('text-search').value);
             });
 
+            $('#text-search').on('autocompletechange change', function () {
+                console.log(this.value);
+                console.log("$('text-search').value = " + $('text-search').value);
+            })
 
-            // document.addEventListener('DOMContentLoaded', init);
-            // $(document).ready(init);
+            $('#text-search').change(function() {
+                console.log("text-search was changed");
+                console.log("text-search was changed to " + $('#text-search').value);
+            })
+
+            $('#text-search').autocomplete({
+                source: allRecipeNames, 
+                select: function(event, ui) {
+                    init(ui.item.value);
+                } 
+            }, {
+                autoFocus: true,
+                delay: 300,
+                minLength: 1
+            });
 
         } else {
             // doc.data() will be undefined in this case
