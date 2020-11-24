@@ -35,8 +35,9 @@ const signInPage = function() {
     var $signupPass = $('<input type="password" placeholder="password" id="password" required/>')
     var $first = $('<input type="text" placeholder="first name" id="firstName"/>');
     var $last = $('<input type="text" placeholder="last name" id="lastName"/>');
+    var $signupError = $('<p id="signupError"></p>');
     var $signupBtn = $('<input type="submit" value="Sign up" id="signUpbtn" class="button" />');
-    $signupFormInput.append($signupEmail, $signupPass, $first, $last, $signupBtn); 
+    $signupFormInput.append($signupEmail, $signupPass, $first, $last, $signupBtn, $signupError); 
     $signupForm.append($signupTitle, $signupFormInput); 
 
     $container.append($tabs, $loginForm, $signupForm); 

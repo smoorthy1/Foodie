@@ -42,7 +42,15 @@ export function signUp() {
             signIn();
         })
     })
-    promise.catch(e => alert(e.message));
+    promise.catch(e => {
+        if (e.message == "The email address is already in use by another account.") {
+            document.getElementById("signupError").innerHTML = "User already exists";
+        }
+        else {
+            document.getElementById("signupError").innerHTML = "Please fill out all fields";
+        }
+        console.log(e.message);
+    });
 }
 
 export function signIn(){
@@ -63,8 +71,13 @@ export function signIn(){
         window.location.href = "profilepage.html"; 
     })
     promise.catch(e => {
-        document.getElementById("loginError").innerHTML = "Incorrect Password";
-        // console.log(e.message)
+        if (e.message == "There is no user record corresponding to this identifier. The user may have been deleted.") {
+            document.getElementById("loginError").innerHTML = "User doesn't exist";
+        }
+        else {
+            document.getElementById("loginError").innerHTML = "Incorrect Password";
+        }
+        console.log(e.message)
     }); 
 }
 
