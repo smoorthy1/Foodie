@@ -397,7 +397,7 @@ export const logInHead = function() {
 
 export const createHome = function () {
     var $container = $('<div></div>').addClass('container');
-    var $photo = $('<img src="foodie_head.jpg" style="max-height:350px;" alt="Foodie">');
+    var $photo = $('<img src="foodie_head.jpg" style="max-height:350px;" alt="Foodie">').addClass('.ibx-img');
     var $siteName = $('<div>Foodie</div>').addClass('left');
     $container.append($photo, $siteName);
 
